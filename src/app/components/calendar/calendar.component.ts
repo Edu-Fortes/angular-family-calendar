@@ -13,6 +13,20 @@ export class CalendarComponent {
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin],
     initialView: 'dayGridMonth',
+    locale: 'pt-br',
+    buttonText: {
+      today: 'Hoje',
+      month: 'Mês',
+      week: 'Semana',
+      day: 'Dia',
+      year: 'Ano',
+      list: 'Lista'
+    },
+    headerToolbar: {
+      start: 'title',
+      center: '',
+      right: 'dayGridMonth,dayGridWeek prev today next',
+    },
     events: [
       { title: 'event 1', date: '2024-12-20' },
       { title: 'event 2', date: '2024-12-20' },
