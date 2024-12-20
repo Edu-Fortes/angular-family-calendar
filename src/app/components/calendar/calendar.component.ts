@@ -27,6 +27,14 @@ export class CalendarComponent {
       center: '',
       right: 'dayGridMonth,dayGridWeek prev today next',
     },
+    views: {
+      dayGridWeek: {
+        titleFormat: {
+          month: 'short',
+          day: 'numeric',
+        }
+      }
+    },
     events: [
       { title: 'event 1', date: '2024-12-20' },
       { title: 'event 2', date: '2024-12-20' },
