@@ -18,8 +18,13 @@ export class ListComponent {
     headerToolbar: false,
     height: '100%',
     events: [
-      { title: 'event 1', date: '2024-12-20' },
-      { title: 'event 2', date: '2024-12-20' },
+      {
+        title: 'event 1',
+        date: '2024-12-23',
+      },
+      { title: 'event 2', date: '2024-12-23' },
     ],
+    noEventsContent: 'Nenhum evento programado',
+    displayEventTime: false,
   };
 }

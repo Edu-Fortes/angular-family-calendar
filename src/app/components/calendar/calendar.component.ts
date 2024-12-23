@@ -20,7 +20,7 @@ export class CalendarComponent {
       week: 'Semana',
       day: 'Dia',
       year: 'Ano',
-      list: 'Lista'
+      list: 'Lista',
     },
     headerToolbar: {
       start: 'title',
@@ -32,12 +32,16 @@ export class CalendarComponent {
         titleFormat: {
           month: 'short',
           day: 'numeric',
-        }
-      }
+        },
+      },
     },
     events: [
-      { title: 'event 1', date: '2024-12-20' },
-      { title: 'event 2', date: '2024-12-20' },
+      {
+        title: 'event 1',
+        date: '2024-12-23',
+      },
+      { title: 'event 2', date: '2024-12-23' },
     ],
+    displayEventTime: false,
   };
 }
