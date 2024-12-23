@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions } from '@fullcalendar/core';
+import { CalendarOptions, DateSelectArg } from '@fullcalendar/core';
+import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 
 @Component({
@@ -11,7 +12,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 })
 export class CalendarComponent {
   calendarOptions: CalendarOptions = {
-    plugins: [dayGridPlugin],
+    plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
     locale: 'pt-br',
     buttonText: {
@@ -41,7 +42,33 @@ export class CalendarComponent {
         date: '2024-12-23',
       },
       { title: 'event 2', date: '2024-12-23' },
+      {
+        title: 'event 1',
+        date: '2024-12-23',
+      },
+      { title: 'event 2', date: '2024-12-23' },
     ],
     displayEventTime: false,
+    dayMaxEvents: true,
+    selectable: true,
+    selectMirror: true,
+    select: this.handleDateSelect, // arrumar metodo para grava no BD
   };
+
+  handleDateSelect(selectInfo: DateSelectArg) {
+    const title = prompt('Please enter a new title for your event');
+    const calendarApi = selectInfo.view.calendar;
+
+    calendarApi.unselect(); // clear date selection
+
+    if (title) {
+      calendarApi.addEvent({
+        // id: createEventId(),
+        title,
+        start: selectInfo.startStr,
+        end: selectInfo.endStr,
+        allDay: selectInfo.allDay,
+      });
+    }
+  }
 }
