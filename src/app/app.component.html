@@ -1,10 +1,8 @@
 <div class="main">
-    <div class="main__calendar">
+    <p-card>
         <app-calendar />
-    </div>
-    <div class="main__list">
+    </p-card>
+    <p-card [style]="{height: '100%'}" header="Para hoje">
         <app-list />
-    </div>
+    </p-card>
 </div>
-
-<router-outlet />

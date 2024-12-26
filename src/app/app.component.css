@@ -3,16 +3,3 @@
     grid-template-columns: 3fr 1fr;
     gap: 1.5rem
 }
-
-.main__calendar {
-    border: 2px solid black;
-    border-radius: 20px;
-    padding: 2rem;
-}
-
-.main__list {
-    height: 100%;
-    border: 2px solid black;
-    border-radius: 20px;
-    overflow: hidden;
-}

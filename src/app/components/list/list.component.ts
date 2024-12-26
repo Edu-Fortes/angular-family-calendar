@@ -16,13 +16,13 @@ export class ListComponent {
     listDaySideFormat: false,
     locale: 'pt-br',
     headerToolbar: false,
-    height: '100%',
+    height: 'auto',
     events: [
       {
-        title: 'event 1',
-        date: '2024-12-23',
+        title: 'Terminar App',
+        date: '2024-12-26',
       },
-      { title: 'event 2', date: '2024-12-23' },
+      { title: 'Lançar App para publico alvo', date: '2024-12-26' },
     ],
     noEventsContent: 'Nenhum evento programado',
     displayEventTime: false,
