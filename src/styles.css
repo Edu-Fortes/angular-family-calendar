@@ -1,3 +1,17 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('./assets/fonts/Inter-VariableFont_opsz\,wght.ttf');
+}
+
+@font-face {
+    font-family: 'Inter-Italic';
+    src: url('./assets/fonts/Inter-Italic-VariableFont_opsz\,wght.ttf');
+}
+
+:root {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
 html,
 body,
 body>* {
