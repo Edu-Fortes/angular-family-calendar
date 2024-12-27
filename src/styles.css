@@ -1,33 +1,28 @@
 @import "primeicons/primeicons.css";
 
 @font-face {
-    font-family: 'Inter';
-    src: url('./assets/fonts/Inter-VariableFont_opsz\,wght.ttf');
+  font-family: 'Inter';
+  src: url('./assets/fonts/Inter-VariableFont_opsz\,wght.ttf');
 }
 
 @font-face {
-    font-family: 'Inter-Italic';
-    src: url('./assets/fonts/Inter-Italic-VariableFont_opsz\,wght.ttf');
+  font-family: 'Inter-Italic';
+  src: url('./assets/fonts/Inter-Italic-VariableFont_opsz\,wght.ttf');
 }
 
 :root {
-    font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
 html,
 body,
-body > * {
+body>* {
   /* the app-root */
   margin: 0;
   padding: 0;
   height: 100%;
-body>* {
-    /* the app-root */
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background-color: #f3f3f3;
-    font-size: 0.936rem;
+  background-color: #f3f3f3;
+  font-size: 0.936rem;
 }
 
 .page {

@@ -3,6 +3,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import listPlugin from '@fullcalendar/list';
 
 @Component({
   selector: 'app-calendar',
@@ -12,7 +13,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 })
 export class CalendarComponent {
   calendarOptions: CalendarOptions = {
-    plugins: [dayGridPlugin, interactionPlugin],
+    plugins: [dayGridPlugin, interactionPlugin, listPlugin],
     initialView: 'dayGridMonth',
     locale: 'pt-br',
     buttonText: {
@@ -26,7 +27,7 @@ export class CalendarComponent {
     headerToolbar: {
       start: 'title',
       center: '',
-      right: 'dayGridMonth,dayGridWeek prev today next',
+      right: 'dayGridMonth,dayGridWeek,listDay prev today next',
     },
     views: {
       dayGridWeek: {
@@ -36,17 +37,49 @@ export class CalendarComponent {
         },
       },
     },
-    events: [
+    eventSources: [
       {
-        title: 'event 1',
-        date: '2024-12-23',
+        events: [
+          {
+            title: 'Terminar App',
+            date: '2024-12-26',
+          },
+          { title: 'Lançar App para publico alvo', date: '2024-12-27' },
+        ],
+        color: 'black',     // an option!
+        textColor: 'yellow' // an option!
       },
-      { title: 'event 2', date: '2024-12-23' },
       {
-        title: 'event 1',
-        date: '2024-12-23',
+        events: [
+          {
+            title: 'Evento Custom',
+            date: '2024-12-27',
+          },
+          { title: 'Nova cor evento', date: '2024-12-27' },
+        ],
+        color: 'green',     // an option!
+        // textColor: 'yellow' // an option!
       },
-      { title: 'event 2', date: '2024-12-23' },
+      {
+        events: [
+          {
+            title: 'Festa ano novo firma',
+            date: '2024-12-28',
+          },
+          { title: 'Véspera Ano novo', date: '2024-12-31' },
+        ],
+        color: 'orange',     // an option!
+        // textColor: 'yellow' // an option!
+      },
+      {
+        events: [
+          {
+            title: 'Festa ano novo firma',
+            date: '2024-12-27',
+          },
+          { title: 'Véspera Ano novo', date: '2024-12-31' },
+        ],
+      }
     ],
     displayEventTime: false,
     dayMaxEvents: true,
