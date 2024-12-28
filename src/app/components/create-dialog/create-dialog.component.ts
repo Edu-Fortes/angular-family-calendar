@@ -15,8 +15,4 @@ export class CreateDialogComponent {
   constructor(private dataService: CreateEventDialogStateService) {
     this.visible = this.dataService.getData();
   }
-
-  showDialog() {
-    this.dataService.setData(true);
-  }
 }

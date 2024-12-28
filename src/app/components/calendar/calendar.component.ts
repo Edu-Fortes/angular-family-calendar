@@ -12,10 +12,7 @@ import { CreateEventDialogStateService } from '../../services/create-event-dialo
   styleUrl: './calendar.component.css',
 })
 export class CalendarComponent {
-  visible;
-  constructor(private dataService: CreateEventDialogStateService) {
-    this.visible = this.dataService.getData();
-  }
+  constructor(private dataService: CreateEventDialogStateService) { }
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, listPlugin],
@@ -90,18 +87,10 @@ export class CalendarComponent {
     dayMaxEvents: true,
     selectable: true,
     selectMirror: true,
-    select: this.openDialog, // arrumar metodo para grava no BD
+    select: this.handleDateSelect.bind(this), // arrumar metodo para grava no BD
   };
 
-  // openDialog() {
-  //   this.dataService.setData(true);
-  // }
-
-  openDialog() {
-    this.dataService.setData(true);
-  }
   handleDateSelect(selectInfo: DateSelectArg) {
-    // const title = prompt('Please enter a new title for your event');
     this.dataService.setData(true);
     const calendarApi = selectInfo.view.calendar;
 
