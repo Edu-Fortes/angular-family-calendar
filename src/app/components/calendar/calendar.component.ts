@@ -4,7 +4,7 @@ import { CalendarOptions, DateSelectArg } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
-
+import { CreateEventDialogStateService } from '../../services/create-event-dialog-state.service';
 @Component({
   selector: 'app-calendar',
   imports: [FullCalendarModule],
@@ -12,6 +12,11 @@ import listPlugin from '@fullcalendar/list';
   styleUrl: './calendar.component.css',
 })
 export class CalendarComponent {
+  visible;
+  constructor(private dataService: CreateEventDialogStateService) {
+    this.visible = this.dataService.getData();
+  }
+
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, listPlugin],
     initialView: 'dayGridMonth',
@@ -46,8 +51,8 @@ export class CalendarComponent {
           },
           { title: 'Lançar App para publico alvo', date: '2024-12-27' },
         ],
-        color: 'black',     // an option!
-        textColor: 'yellow' // an option!
+        color: 'black', // an option!
+        textColor: 'yellow', // an option!
       },
       {
         events: [
@@ -57,7 +62,7 @@ export class CalendarComponent {
           },
           { title: 'Nova cor evento', date: '2024-12-27' },
         ],
-        color: 'green',     // an option!
+        color: 'green', // an option!
         // textColor: 'yellow' // an option!
       },
       {
@@ -68,7 +73,7 @@ export class CalendarComponent {
           },
           { title: 'Véspera Ano novo', date: '2024-12-31' },
         ],
-        color: 'orange',     // an option!
+        color: 'orange', // an option!
         // textColor: 'yellow' // an option!
       },
       {
@@ -79,29 +84,37 @@ export class CalendarComponent {
           },
           { title: 'Véspera Ano novo', date: '2024-12-31' },
         ],
-      }
+      },
     ],
     displayEventTime: false,
     dayMaxEvents: true,
     selectable: true,
     selectMirror: true,
-    select: this.handleDateSelect, // arrumar metodo para grava no BD
+    select: this.openDialog, // arrumar metodo para grava no BD
   };
 
+  // openDialog() {
+  //   this.dataService.setData(true);
+  // }
+
+  openDialog() {
+    this.dataService.setData(true);
+  }
   handleDateSelect(selectInfo: DateSelectArg) {
-    const title = prompt('Please enter a new title for your event');
+    // const title = prompt('Please enter a new title for your event');
+    this.dataService.setData(true);
     const calendarApi = selectInfo.view.calendar;
 
     calendarApi.unselect(); // clear date selection
 
-    if (title) {
-      calendarApi.addEvent({
-        // id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
-      });
-    }
+    // if (title) {
+    //   calendarApi.addEvent({
+    //     // id: createEventId(),
+    //     title,
+    //     start: selectInfo.startStr,
+    //     end: selectInfo.endStr,
+    //     allDay: selectInfo.allDay,
+    //   });
+    // }
   }
 }
