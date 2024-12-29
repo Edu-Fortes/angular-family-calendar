@@ -5,6 +5,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import { CreateEventDialogStateService } from '../../services/create-event-dialog-state.service';
+import { SelectionInfoService } from '../../services/selection-info.service';
 @Component({
   selector: 'app-calendar',
   imports: [FullCalendarModule],
@@ -12,7 +13,10 @@ import { CreateEventDialogStateService } from '../../services/create-event-dialo
   styleUrl: './calendar.component.css',
 })
 export class CalendarComponent {
-  constructor(private dataService: CreateEventDialogStateService) { }
+  constructor(
+    private dataService: CreateEventDialogStateService,
+    private selectionService: SelectionInfoService
+  ) {}
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, listPlugin],
@@ -92,6 +96,8 @@ export class CalendarComponent {
 
   handleDateSelect(selectInfo: DateSelectArg) {
     this.dataService.setData(true);
+    this.selectionService.setData(selectInfo);
+
     const calendarApi = selectInfo.view.calendar;
 
     calendarApi.unselect(); // clear date selection
