@@ -2,11 +2,13 @@ import { Component, computed, Signal } from '@angular/core';
 import { CreateEventDialogStateService } from '../../services/create-event-dialog-state.service';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { SelectionInfoService } from '../../services/selection-info.service';
 
 @Component({
   selector: 'app-create-dialog',
-  imports: [DialogModule, ButtonModule],
+  imports: [DialogModule, ButtonModule, InputTextModule, FloatLabelModule],
   templateUrl: './create-dialog.component.html',
   styleUrl: './create-dialog.component.css',
 })
@@ -23,6 +25,10 @@ export class CreateDialogComponent {
   }
 
   formatedDate: Signal<any> = computed(() => {
-    return this.selection().start.toISOString().split('T')[0];
+    return this.selection().start.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    });
   });
 }
