@@ -6,13 +6,14 @@
     [style]="{ width: '25rem' }"
   >
     <p class="p-text-secondary block mb-8">{{ formatedDate() }}</p>
-    <div>
+    <div class="mb-9">
       <p-floatlabel variant="on">
         <label for="evet_title">Título</label>
         <input
           pInputText
+          [(ngModel)]="eventTitle"
           id="event_title"
-          class="flex-auto"
+          class="flex-auto w-full"
           autocomplete="off"
         />
       </p-floatlabel>
@@ -24,7 +25,7 @@
         severity="secondary"
         (click)="visible.set(false)"
       />
-      <p-button label="Save" (click)="visible.set(false)" />
+      <p-button label="Save" (click)="createEvent()" />
     </div>
   </p-dialog>
 </div>
