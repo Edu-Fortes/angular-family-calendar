@@ -19,7 +19,7 @@ export class CalendarComponent {
     private dataService: CreateEventDialogStateService,
     private selectionService: SelectionInfoService,
     private eventTitleService: EventTitleService
-  ) {}
+  ) { }
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, listPlugin],
@@ -100,19 +100,6 @@ export class CalendarComponent {
   handleDateSelect(selectInfo: DateSelectArg) {
     this.dataService.setData(true);
     this.selectionService.setData(selectInfo);
-
-    const calendarApi = selectInfo.view.calendar;
-
-    calendarApi.unselect(); // clear date selection
-
-    const eventTitle = this.eventTitleService.getData()();
-
-    calendarApi.addEvent({
-      // id: createEventId(),
-      title: eventTitle || 'Evento sem título',
-      start: selectInfo.startStr,
-      end: selectInfo.endStr,
-      allDay: selectInfo.allDay,
-    });
   }
 }
+

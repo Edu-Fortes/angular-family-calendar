@@ -4,9 +4,9 @@ import { Injectable, signal, WritableSignal } from '@angular/core';
   providedIn: 'root',
 })
 export class EventTitleService {
-  constructor() {}
+  constructor() { }
 
-  private eventTitle: WritableSignal<string | null> = signal('');
+  private eventTitle: WritableSignal<string | null> = signal(null);
 
   setData(update: string | null) {
     this.eventTitle.set(update);
