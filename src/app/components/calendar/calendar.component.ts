@@ -6,7 +6,6 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import { CreateEventDialogStateService } from '../../services/create-event-dialog-state.service';
 import { SelectionInfoService } from '../../services/selection-info.service';
-import { EventTitleService } from '../../services/event-title.service';
 
 @Component({
   selector: 'app-calendar',
@@ -18,7 +17,6 @@ export class CalendarComponent {
   constructor(
     private dataService: CreateEventDialogStateService,
     private selectionService: SelectionInfoService,
-    private eventTitleService: EventTitleService
   ) { }
 
   calendarOptions: CalendarOptions = {

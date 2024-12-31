@@ -6,8 +6,6 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { EventTitleService } from '../../services/event-title.service';
-import { CreateEventService } from '../../services/create-event.service';
 
 @Component({
   selector: 'app-create-dialog',
@@ -24,13 +22,11 @@ import { CreateEventService } from '../../services/create-event.service';
 export class CreateDialogComponent {
   visible;
   selection;
-  eventTitleInput = new FormControl('');
+  eventTitle = new FormControl('');
 
   constructor(
     private dataService: CreateEventDialogStateService,
     private selectionService: SelectionInfoService,
-    private eventTitleService: EventTitleService,
-    private createEventService: CreateEventService
   ) {
     this.visible = this.dataService.getData();
     this.selection = this.selectionService.getData();
@@ -45,16 +41,16 @@ export class CreateDialogComponent {
   });
 
   createEvent() {
-    this.eventTitleService.setData(this.eventTitleInput.value);
-    this.visible.set(false);
-
     const calendarApi = this.selection().view.calendar
 
     calendarApi.addEvent({
-      title: this.eventTitleInput.value || 'Evento sem título',
+      title: this.eventTitle.value || 'Evento sem título',
       start: this.selection().start,
       end: this.selection().end,
       allDay: this.selection().allDay,
     })
+
+    this.visible.set(false);
+    this.eventTitle.reset()
   }
 }

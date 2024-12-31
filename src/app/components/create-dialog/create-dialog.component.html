@@ -1,31 +1,15 @@
 <form class="card flex justify-center">
-  <p-dialog
-    header="Adicionar evento"
-    [modal]="true"
-    [(visible)]="visible"
-    [style]="{ width: '35rem' }"
-  >
+  <p-dialog header="Adicionar evento" [modal]="true" [(visible)]="visible" [style]="{ width: '35rem' }">
     <p class="p-text-secondary block mb-8">{{ formatedDate() }}</p>
     <div class="mb-9">
       <p-floatlabel variant="on">
         <label for="evet_title">Título</label>
-        <input
-          pInputText
-          [formControl]="eventTitleInput"
-          id="event_title"
-          autocomplete="off"
-          class="flex-auto w-full"
-        />
+        <input pInputText [formControl]="eventTitle" id="event_title" autocomplete="off" class="flex-auto w-full" />
       </p-floatlabel>
       <small id="event_title-help">Adicione um título para o novo evento</small>
     </div>
     <div class="flex justify-end gap-4">
-      <p-button
-        icon="pi pi-times"
-        [rounded]="true"
-        severity="danger"
-        (click)="visible.set(false)"
-      />
+      <p-button icon="pi pi-times" [rounded]="true" severity="danger" (click)="visible.set(false)" />
       <p-button icon="pi pi-check" [rounded]="true" (click)="createEvent()" />
     </div>
   </p-dialog>
