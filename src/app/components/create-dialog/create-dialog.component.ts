@@ -47,7 +47,8 @@ export class CreateDialogComponent {
       title: this.eventTitle.value || 'Evento sem título',
       start: this.selection().start,
       end: this.selection().end,
-      allDay: this.selection().allDay,
+      // allDay: this.selection().allDay,
+      allDay: false
     })
 
     this.visible.set(false);
