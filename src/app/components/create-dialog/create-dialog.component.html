@@ -1,5 +1,6 @@
 <form class="card flex justify-center">
-  <p-dialog header="Adicionar evento" [modal]="true" [(visible)]="visible" [style]="{ width: '35rem' }">
+  <p-dialog header="Adicionar evento" closeOnEscape="true" [modal]="true" [(visible)]="visible"
+    [style]="{ width: '35rem' }">
     <p class="p-text-secondary block mb-8">{{ formatedDate() }}</p>
     <div class="mb-9">
       <p-floatlabel variant="on">
