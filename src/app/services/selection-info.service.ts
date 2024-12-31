@@ -5,7 +5,7 @@ import { DateSelectArg } from '@fullcalendar/core/index.js';
   providedIn: 'root',
 })
 export class SelectionInfoService {
-  constructor() {}
+  constructor() { }
 
   private selectionInfo: WritableSignal<DateSelectArg> = signal({
     start: new Date(),

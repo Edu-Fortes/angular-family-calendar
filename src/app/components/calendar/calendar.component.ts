@@ -6,6 +6,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import { CreateEventDialogStateService } from '../../services/create-event-dialog-state.service';
 import { SelectionInfoService } from '../../services/selection-info.service';
+import { EventTitleService } from '../../services/event-title.service';
+
 @Component({
   selector: 'app-calendar',
   imports: [FullCalendarModule],
@@ -15,7 +17,8 @@ import { SelectionInfoService } from '../../services/selection-info.service';
 export class CalendarComponent {
   constructor(
     private dataService: CreateEventDialogStateService,
-    private selectionService: SelectionInfoService
+    private selectionService: SelectionInfoService,
+    private eventTitleService: EventTitleService
   ) {}
 
   calendarOptions: CalendarOptions = {
@@ -102,14 +105,14 @@ export class CalendarComponent {
 
     calendarApi.unselect(); // clear date selection
 
-    // if (title) {
-    //   calendarApi.addEvent({
-    //     // id: createEventId(),
-    //     title,
-    //     start: selectInfo.startStr,
-    //     end: selectInfo.endStr,
-    //     allDay: selectInfo.allDay,
-    //   });
-    // }
+    const eventTitle = this.eventTitleService.getData()();
+
+    calendarApi.addEvent({
+      // id: createEventId(),
+      title: eventTitle || 'Evento sem título',
+      start: selectInfo.startStr,
+      end: selectInfo.endStr,
+      allDay: selectInfo.allDay,
+    });
   }
 }

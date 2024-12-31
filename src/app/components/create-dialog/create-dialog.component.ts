@@ -1,11 +1,13 @@
 import { Component, computed, Signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CreateEventDialogStateService } from '../../services/create-event-dialog-state.service';
+import { SelectionInfoService } from '../../services/selection-info.service';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { SelectionInfoService } from '../../services/selection-info.service';
+import { CalendarComponent } from '../calendar/calendar.component';
+import { EventTitleService } from '../../services/event-title.service';
 
 @Component({
   selector: 'app-create-dialog',
@@ -14,7 +16,7 @@ import { SelectionInfoService } from '../../services/selection-info.service';
     ButtonModule,
     InputTextModule,
     FloatLabelModule,
-    FormsModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './create-dialog.component.html',
   styleUrl: './create-dialog.component.css',
@@ -22,11 +24,12 @@ import { SelectionInfoService } from '../../services/selection-info.service';
 export class CreateDialogComponent {
   visible;
   selection;
-  eventTitle: string = '';
+  eventTitleInput = new FormControl('');
 
   constructor(
     private dataService: CreateEventDialogStateService,
-    private selectionService: SelectionInfoService
+    private selectionService: SelectionInfoService,
+    private eventTitleService: EventTitleService
   ) {
     this.visible = this.dataService.getData();
     this.selection = this.selectionService.getData();
@@ -41,8 +44,7 @@ export class CreateDialogComponent {
   });
 
   createEvent() {
-    console.log(this.eventTitle);
+    this.eventTitleService.setData(this.eventTitleInput.value);
     this.visible.set(false);
-    this.eventTitle = '';
   }
 }
