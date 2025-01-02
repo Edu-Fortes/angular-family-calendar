@@ -1,11 +1,17 @@
 import { Component, computed, Signal } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CreateEventDialogStateService } from '../../services/create-event-dialog-state.service';
 import { SelectionInfoService } from '../../services/selection-info.service';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { Select } from 'primeng/select';
+
+interface FamilyMember {
+  name: string;
+  color: string;
+}
 
 @Component({
   selector: 'app-create-dialog',
@@ -13,6 +19,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     DialogModule,
     ButtonModule,
     InputTextModule,
+    Select,
     FloatLabelModule,
     ReactiveFormsModule,
   ],
@@ -22,11 +29,10 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 export class CreateDialogComponent {
   visible;
   selection;
-  eventTitle = new FormControl('');
 
   constructor(
     private dataService: CreateEventDialogStateService,
-    private selectionService: SelectionInfoService,
+    private selectionService: SelectionInfoService
   ) {
     this.visible = this.dataService.getData();
     this.selection = this.selectionService.getData();
@@ -40,18 +46,42 @@ export class CreateDialogComponent {
     });
   });
 
+  createEventForm = new FormGroup({
+    eventTitle: new FormControl(''),
+    familyMember: new FormControl<FamilyMember | null>(null),
+  });
+
+  familyMembers = [
+    {
+      name: 'Mãe',
+      color: 'red',
+    },
+    {
+      name: 'Pai',
+      color: 'yellow',
+    },
+    {
+      name: 'Filho',
+      color: 'green',
+    },
+    {
+      name: 'Filha',
+      color: 'pink',
+    },
+  ];
+
   createEvent() {
-    const calendarApi = this.selection().view.calendar
+    const calendarApi = this.selection().view.calendar;
 
     calendarApi.addEvent({
-      title: this.eventTitle.value || 'Evento sem título',
+      title: this.createEventForm.value.eventTitle ?? 'Evento sem título',
       start: this.selection().start,
       end: this.selection().end,
-      // allDay: this.selection().allDay,
-      allDay: false
-    })
+      allDay: false,
+      color: this.createEventForm.value.familyMember?.color ?? 'red',
+    });
 
     this.visible.set(false);
-    this.eventTitle.reset()
+    this.createEventForm.reset();
   }
 }
