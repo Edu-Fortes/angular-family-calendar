@@ -53,6 +53,10 @@ export class CreateDialogComponent {
 
   familyMembers = [
     {
+      name: 'Toda a família',
+      color: 'sky'
+    },
+    {
       name: 'Mãe',
       color: 'red',
     },

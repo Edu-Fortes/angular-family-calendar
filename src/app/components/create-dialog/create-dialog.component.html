@@ -1,41 +1,24 @@
 <form [formGroup]="createEventForm" class="card flex justify-center">
-  <p-dialog
-    header="Adicionar evento"
-    closeOnEscape="true"
-    [modal]="true"
-    [(visible)]="visible"
-    [style]="{ width: '35rem' }"
-  >
+  <p-dialog header="Adicionar evento" closeOnEscape="true" [modal]="true" [(visible)]="visible"
+    [style]="{ width: '35rem' }">
     <p class="p-text-secondary block mb-8">{{ formatedDate() }}</p>
     <div class="mb-9">
-      <p-select
-        class="w-full"
-        formControlName="familyMember"
-        [options]="familyMembers"
-        optionLabel="name"
-        placeholder="Selecione o membro da família"
-      />
+      <p-floatlabel variant="on" class="w-full">
+        <p-select inputId="family-member" class="w-full" formControlName="familyMember" [options]="familyMembers"
+          optionLabel="name" styleClass="w-full" />
+        <label for="family-member">Membro da família</label>
+      </p-floatlabel>
+      <small id="family-member-help">Selecione um membro da família</small>
     </div>
     <div class="mb-9">
       <p-floatlabel variant="on">
         <label for="evet_title">Título</label>
-        <input
-          pInputText
-          formControlName="eventTitle"
-          id="event_title"
-          autocomplete="off"
-          class="flex-auto w-full"
-        />
+        <input pInputText formControlName="eventTitle" id="event_title" autocomplete="off" class="flex-auto w-full" />
       </p-floatlabel>
       <small id="event_title-help">Adicione um título para o novo evento</small>
     </div>
     <div class="flex justify-end gap-4">
-      <p-button
-        icon="pi pi-times"
-        [rounded]="true"
-        severity="danger"
-        (click)="visible.set(false)"
-      />
+      <p-button icon="pi pi-times" [rounded]="true" severity="danger" (click)="visible.set(false)" />
       <p-button icon="pi pi-check" [rounded]="true" (click)="createEvent()" />
     </div>
   </p-dialog>
