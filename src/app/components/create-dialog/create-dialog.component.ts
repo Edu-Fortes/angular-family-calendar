@@ -11,6 +11,7 @@ import { Select } from 'primeng/select';
 interface FamilyMember {
   name: string;
   color: string;
+  textColor: string;
 }
 
 @Component({
@@ -54,7 +55,8 @@ export class CreateDialogComponent {
   familyMembers = [
     {
       name: 'Toda a família',
-      color: 'sky'
+      color: 'Aquamarine',
+      textColor: 'DarkSlateGray'
     },
     {
       name: 'Mãe',
@@ -82,7 +84,8 @@ export class CreateDialogComponent {
       start: this.selection().start,
       end: this.selection().end,
       allDay: false,
-      color: this.createEventForm.value.familyMember?.color ?? 'red',
+      color: this.createEventForm.value.familyMember?.color ?? 'sky',
+      textColor: this.createEventForm.value.familyMember?.textColor
     });
 
     this.visible.set(false);
