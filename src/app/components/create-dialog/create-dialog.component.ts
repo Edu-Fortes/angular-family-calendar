@@ -7,6 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
+import { CheckboxModule } from 'primeng/checkbox'
 
 interface FamilyMember {
   name: string;
@@ -20,6 +21,7 @@ interface FamilyMember {
     DialogModule,
     ButtonModule,
     InputTextModule,
+    CheckboxModule,
     Select,
     FloatLabelModule,
     ReactiveFormsModule,
@@ -48,7 +50,8 @@ export class CreateDialogComponent {
   });
 
   createEventForm = new FormGroup({
-    eventTitle: new FormControl(''),
+    allDay: new FormControl<boolean>(false),
+    eventTitle: new FormControl<string | null>(null),
     familyMember: new FormControl<FamilyMember | null>(null),
   });
 
@@ -83,7 +86,7 @@ export class CreateDialogComponent {
       title: this.createEventForm.value.eventTitle ?? 'Evento sem título',
       start: this.selection().start,
       end: this.selection().end,
-      allDay: false,
+      allDay: this.createEventForm.value.allDay ?? false,
       color: this.createEventForm.value.familyMember?.color ?? 'sky',
       textColor: this.createEventForm.value.familyMember?.textColor
     });
