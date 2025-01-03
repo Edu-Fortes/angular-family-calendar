@@ -28,3 +28,9 @@
 - Diminuir arquivos de Services agrupando conforme funções. Ex.:
   - Services para geranciar State para abrir e fechar modais conforme tipo (criar/editar)
   - Services para detectar se clicou na data ou no evento
+
+## Corrigir
+
+- Corrigir background (modal) do componente Dialog para travar seleção ao fundo.
+    - Quando dialog de criar evento está aberto é possível selecionar as datas ao fundo.
+    - Quando dialog de editar evento está aberto é possível abrir modal de adicionar evento 

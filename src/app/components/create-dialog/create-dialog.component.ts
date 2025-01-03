@@ -8,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
 import { CheckboxModule } from 'primeng/checkbox'
+import { formatDate, FormatDateOptions, formatRange } from '@fullcalendar/core';
 
 interface FamilyMember {
   name: string;
@@ -42,11 +43,21 @@ export class CreateDialogComponent {
   }
 
   formatedDate: Signal<any> = computed(() => {
-    return this.selection().start.toLocaleDateString('pt-BR', {
-      day: '2-digit',
+    const startDate: any = new Date(this.selection().startStr)
+    const endDate: any = new Date(this.selection().endStr)
+    const options: FormatDateOptions = {
+      separator: ' a ',
       month: 'long',
       year: 'numeric',
-    });
+      day: 'numeric',
+      locale: 'pt-BR',
+    }
+
+    const numberOfSelectedDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+    if (numberOfSelectedDays === 1)
+      return formatDate(this.selection().startStr, options)
+    else return formatRange(this.selection().startStr, this.selection().endStr, { ...options, isEndExclusive: true })
   });
 
   createEventForm = new FormGroup({

@@ -23,7 +23,7 @@ export class CalendarComponent {
     private dataService: CreateEventDialogStateService,
     private selectionService: SelectionInfoService,
     private editStateService: EditEventDialogStateService
-  ) {}
+  ) { }
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, listPlugin],
@@ -122,6 +122,7 @@ export class CalendarComponent {
   };
 
   handleDateSelect(selectInfo: DateSelectArg) {
+    console.log(selectInfo)
     this.dataService.setData(true);
     this.selectionService.setData(selectInfo);
   }
