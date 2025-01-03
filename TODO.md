@@ -29,6 +29,8 @@
   - Services para geranciar State para abrir e fechar modais conforme tipo (criar/editar)
   - Services para detectar se clicou na data ou no evento
 
+- mover matriz FamilyMembers do create dialog e edit dialog para usar do mesmo lugar
+
 ## Corrigir
 
 - Corrigir background (modal) do componente Dialog para travar seleção ao fundo.
