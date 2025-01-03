@@ -80,6 +80,8 @@ export class CreateDialogComponent {
   ];
 
   createEvent() {
+    this.selection().jsEvent?.preventDefault();
+
     const calendarApi = this.selection().view.calendar;
 
     calendarApi.addEvent({
