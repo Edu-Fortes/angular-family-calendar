@@ -1,5 +1,5 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { DateSelectArg } from '@fullcalendar/core/index.js';
+import { DateSelectArg, EventClickArg } from '@fullcalendar/core';
 
 @Injectable({
   providedIn: 'root',
@@ -17,11 +17,21 @@ export class SelectionInfoService {
     view: {} as any, // Replace with a valid ViewApi object
   });
 
+  private eventClickInfo: any = signal({}); // ARRUMAR MUITO ESSE TIPO
+
   setData(update: DateSelectArg) {
     this.selectionInfo.set(update);
   }
 
   getData() {
     return this.selectionInfo;
+  }
+
+  setEventClick(update: any) {// ARRUMAR ESSE TIPO
+    this.eventClickInfo.set(update)
+  }
+
+  getEventClick() {
+    return this.eventClickInfo
   }
 }
