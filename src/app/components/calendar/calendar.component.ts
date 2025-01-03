@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarOptions, DateSelectArg, EventClickArg } from '@fullcalendar/core';
+import {
+  CalendarOptions,
+  DateSelectArg,
+  EventClickArg,
+} from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import { CreateEventDialogStateService } from '../../services/create-event-dialog-state.service';
 import { SelectionInfoService } from '../../services/selection-info.service';
+import { EditEventDialogStateService } from '../../services/edit-event-dialog-state.service';
 
 @Component({
   selector: 'app-calendar',
@@ -17,7 +22,8 @@ export class CalendarComponent {
   constructor(
     private dataService: CreateEventDialogStateService,
     private selectionService: SelectionInfoService,
-  ) { }
+    private editStateService: EditEventDialogStateService
+  ) {}
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, listPlugin],
@@ -50,10 +56,12 @@ export class CalendarComponent {
           {
             title: 'Terminar App',
             date: '2024-12-26',
-            allDay: false
+            allDay: false,
           },
           {
-            title: 'Lançar App para publico alvo', date: '2024-12-27', allDay: false
+            title: 'Lançar App para publico alvo',
+            date: '2024-12-27',
+            allDay: false,
           },
         ],
         color: 'black', // an option!
@@ -64,10 +72,12 @@ export class CalendarComponent {
           {
             title: 'Evento Custom',
             date: '2024-12-27',
-            allDay: false
+            allDay: false,
           },
           {
-            title: 'Nova cor evento', date: '2024-12-27', allDay: false
+            title: 'Nova cor evento',
+            date: '2024-12-27',
+            allDay: false,
           },
         ],
         color: 'green', // an option!
@@ -77,11 +87,13 @@ export class CalendarComponent {
         events: [
           {
             title: 'Festa ano novo firma',
-            date: '2024-12-28', allDay: false
-
+            date: '2024-12-28',
+            allDay: false,
           },
           {
-            title: 'Véspera Ano novo', date: '2024-12-31', allDay: false
+            title: 'Véspera Ano novo',
+            date: '2024-12-31',
+            allDay: false,
           },
         ],
         color: 'orange', // an option!
@@ -92,10 +104,10 @@ export class CalendarComponent {
           {
             title: 'Festa ano novo firma',
             date: '2024-12-27',
-
           },
           {
-            title: 'Véspera Ano novo', date: '2024-12-31',
+            title: 'Véspera Ano novo',
+            date: '2024-12-31',
           },
         ],
       },
@@ -106,7 +118,7 @@ export class CalendarComponent {
     selectMirror: true,
     select: this.handleDateSelect.bind(this), // arrumar metodo para grava no BD
     editable: true,
-    eventClick: this.handleEventClick.bind(this)
+    eventClick: this.handleEventClick.bind(this),
   };
 
   handleDateSelect(selectInfo: DateSelectArg) {
@@ -115,7 +127,7 @@ export class CalendarComponent {
   }
 
   handleEventClick(eventClickInfo: EventClickArg) {
-    console.log(eventClickInfo.event.title)
+    console.log(eventClickInfo.event.title);
+    this.editStateService.setState(true);
   }
 }
-
