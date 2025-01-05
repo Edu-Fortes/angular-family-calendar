@@ -122,14 +122,22 @@ export class CalendarComponent {
   };
 
   handleDateSelect(selectInfo: DateSelectArg) {
-    console.log(selectInfo)
     this.dataService.setData(true);
     this.selectionService.setData(selectInfo);
+
   }
 
   handleEventClick(eventClickInfo: EventClickArg) {
-    console.log(eventClickInfo.event);
     this.editStateService.setState(true);
-    this.selectionService.setEventClick(eventClickInfo)
+
+    const editableFields = {
+      title: eventClickInfo.event.title,
+      startDate: eventClickInfo.event.startStr,
+      endDate: eventClickInfo.event.endStr,
+      allDay: eventClickInfo.event.allDay,
+      ...eventClickInfo.event.extendedProps
+    }
+
+    this.selectionService.setEventClick(editableFields)
   }
 }

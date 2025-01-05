@@ -1,31 +1,28 @@
-<!-- <form [formGroup]="createEventForm" class="card flex justify-center max-w-full"> -->
-<p-dialog header="Editar evento" closeOnEscape="true" maskStyleClass="backdrop-blur-sm bg-black/30"
-  [(visible)]="visible" [style]="{ width: '35rem' }">
-  <div class="flex justify-between mt-3 mb-10">
-    <p class="p-text-secondary block">Data formatada</p>
-    <div>
-      <label for="all-day" class="mr-3">Dia todo</label>
-      <p-checkbox formControlName="allDay" value="true" inputId="all-day" />
+<form [formGroup]="editEventForm" class="card flex justify-center max-w-full">
+  <p-dialog header="Editar evento" closeOnEscape="true" maskStyleClass="backdrop-blur-sm bg-black/30"
+    [(visible)]="visible" [style]="{ width: '35rem' }">
+    <div class="flex justify-between mt-3 mb-10">
+      <p class="p-text-secondary block">Data formatada</p>
+      <div>
+        <label for="edit_all-day" class="mr-3">Dia todo</label>
+        <p-checkbox formControlName="allDay" value="true" inputId="edit_all-day" />
+      </div>
     </div>
-  </div>
-  <div class="mb-9">
-    <p-floatlabel variant="on" class="w-full">
-      <p-select inputId="family-member" class="w-full" formControlName="familyMember" [options]="familyMembers"
-        optionLabel="name" />
-      <label for="family-member">Membro da família</label>
-    </p-floatlabel>
-    <small id="family-member-help">Selecione um membro da família</small>
-  </div>
-  <div class="mb-9">
-    <p-floatlabel variant="on">
-      <label for="evet_title">Título</label>
-      <input pInputText formControlName="eventTitle" id="event_title" autocomplete="off" class="flex-auto w-full" />
-    </p-floatlabel>
-    <small id="event_title-help">Adicione um título para o novo evento</small>
-  </div>
-  <div class="flex justify-end gap-4">
-    <p-button icon="pi pi-times" [rounded]="true" severity="danger" (click)="visible.set(false)" />
-    <p-button icon="pi pi-check" [rounded]="true" (click)="editEvent()" />
-  </div>
-</p-dialog>
-<!-- </form> -->
+    <div class="mb-9">
+      <label for="edit_family-member">Membro da família</label>
+      <p-select inputId="edit_family-member" class="w-full" formControlName="familyMember" [options]="familyMembers"
+        optionLabel="name" placeholder="{{data().familyMember ?? 'Toda a família'}}" />
+      <small id="edit_family-member-help">Altera o membro da família</small>
+    </div>
+    <div class="mb-9">
+      <label for="edit_title">Título</label>
+      <input pInputText formControlName="title" id="edit_title" autocomplete="off" class="flex-auto w-full"
+        placeholder="{{data().title}}" />
+      <small id="edit_title-help">Altera o título do evento</small>
+    </div>
+    <div class="flex justify-end gap-4">
+      <p-button icon="pi pi-times" [rounded]="true" severity="danger" (click)="visible.set(false)" />
+      <p-button icon="pi pi-check" [rounded]="true" (click)="editEvent()" />
+    </div>
+  </p-dialog>
+</form>
