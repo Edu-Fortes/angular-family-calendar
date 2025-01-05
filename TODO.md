@@ -31,6 +31,8 @@
 
 - mover matriz FamilyMembers do create dialog e edit dialog para usar do mesmo lugar
 
+- compartinhar método para formatar data
+
 ## Corrigir
 
 - Corrigir background (modal) do componente Dialog para travar seleção ao fundo.
