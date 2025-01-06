@@ -3,9 +3,9 @@
     [(visible)]="visible" [style]="{ width: '35rem' }">
     <div class="flex justify-between mt-3 mb-10">
       <p class="p-text-secondary block">{{ formatedDate() }}</p>
-      <div>
-        <label for="all-day" class="mr-3">Dia todo</label>
-        <p-checkbox formControlName="allDay" value=true inputId="all-day" />
+      <div class="flex gap-4 items-start">
+        <span>Dia todo</span>
+        <p-toggleswitch formControlName="allDay"/>
       </div>
     </div>
     <div class="mb-9">

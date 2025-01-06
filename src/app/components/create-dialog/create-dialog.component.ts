@@ -7,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
-import { CheckboxModule } from 'primeng/checkbox'
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { formatDate, FormatDateOptions, formatRange } from '@fullcalendar/core';
 
 interface FamilyMember {
@@ -22,7 +22,7 @@ interface FamilyMember {
     DialogModule,
     ButtonModule,
     InputTextModule,
-    CheckboxModule,
+    ToggleSwitchModule,
     Select,
     FloatLabelModule,
     ReactiveFormsModule,
