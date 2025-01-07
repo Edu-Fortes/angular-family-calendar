@@ -23,7 +23,7 @@ export class CalendarComponent {
     private dataService: CreateEventDialogStateService,
     private selectionService: SelectionInfoService,
     private editStateService: EditEventDialogStateService
-  ) { }
+  ) {}
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, listPlugin],
@@ -124,7 +124,6 @@ export class CalendarComponent {
   handleDateSelect(selectInfo: DateSelectArg) {
     this.dataService.setData(true);
     this.selectionService.setData(selectInfo);
-
   }
 
   handleEventClick(eventClickInfo: EventClickArg) {
@@ -135,9 +134,9 @@ export class CalendarComponent {
       startDate: eventClickInfo.event.startStr,
       endDate: eventClickInfo.event.endStr,
       allDay: eventClickInfo.event.allDay,
-      ...eventClickInfo.event.extendedProps
-    }
+      ...eventClickInfo.event.extendedProps,
+    };
 
-    this.selectionService.setEventClick(editableFields)
+    this.selectionService.setEventClick(editableFields);
   }
 }

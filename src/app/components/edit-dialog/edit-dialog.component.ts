@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { CheckboxModule } from 'primeng/checkbox';
 import { DialogModule } from 'primeng/dialog';
 import { SelectModule } from 'primeng/select';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { InputTextModule } from 'primeng/inputtext';
+import { DatePickerModule } from 'primeng/datepicker';
 import { EditEventDialogStateService } from '../../services/edit-event-dialog-state.service';
 import { SelectionInfoService } from '../../services/selection-info.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -13,19 +14,20 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   imports: [
     ReactiveFormsModule,
     DialogModule,
-    CheckboxModule,
     SelectModule,
     ButtonModule,
-    InputTextModule
+    InputTextModule,
+    ToggleSwitchModule,
+    DatePickerModule,
   ],
   templateUrl: './edit-dialog.component.html',
   styleUrl: './edit-dialog.component.css',
 })
 export class EditDialogComponent {
-  private stateService = inject(EditEventDialogStateService)
-  private selectionService = inject(SelectionInfoService)
-  visible = this.stateService.getState()
-  data = this.selectionService.getEventClick()
+  private stateService = inject(EditEventDialogStateService);
+  private selectionService = inject(SelectionInfoService);
+  visible = this.stateService.getState();
+  data = this.selectionService.getEventClick();
 
   editEventForm = new FormGroup({
     allDay: new FormControl<boolean | null>(null),
@@ -39,7 +41,7 @@ export class EditDialogComponent {
     {
       name: 'Toda a família',
       color: 'Aquamarine',
-      textColor: 'DarkSlateGray'
+      textColor: 'DarkSlateGray',
     },
     {
       name: 'Mãe',
@@ -59,29 +61,22 @@ export class EditDialogComponent {
     },
   ];
 
-
   editEvent() {
-    console.log(this.data(), this.data().title, this.data().familyMember, this.data().allDay)
-    console.log('Log do Form antes do method: ', this.editEventForm.value)
+    console.log(this.data());
+
+    console.log(this.editEventForm.value);
 
     this.editEventForm.patchValue({
-      ...this.data()
-    })
-    console.log('Depois do method: ', this.editEventForm.value)
+      allDay: this.editEventForm.value.allDay,
+      title: this.editEventForm.value.title,
+      familyMember: this.editEventForm.value.familyMember,
+      startDate: this.editEventForm.value.startDate,
+      endDate: this.editEventForm.value.endDate,
+    });
 
-    this.editEventForm.patchValue({
-      title: this.editEventForm.value.title
-    })
+    console.log(this.editEventForm.value);
 
-    console.log('depois de updatar: ', this.editEventForm.value)
-
-    this.data().jsEvent?.preventDefault();
-
-    const event = this.data();
-
-
-    this.editEventForm.reset()
-
+    this.visible.set(false);
+    this.editEventForm.reset();
   }
-
 }
