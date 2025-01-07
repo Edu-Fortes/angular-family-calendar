@@ -128,15 +128,6 @@ export class CalendarComponent {
 
   handleEventClick(eventClickInfo: EventClickArg) {
     this.editStateService.setState(true);
-
-    const editableFields = {
-      title: eventClickInfo.event.title,
-      startDate: eventClickInfo.event.startStr,
-      endDate: eventClickInfo.event.endStr,
-      allDay: eventClickInfo.event.allDay,
-      ...eventClickInfo.event.extendedProps,
-    };
-
-    this.selectionService.setEventClick(editableFields);
+    this.selectionService.setEventClick(eventClickInfo);
   }
 }

@@ -63,18 +63,24 @@ export class EditDialogComponent {
 
   editEvent() {
     console.log(this.data());
+    console.log(this.data().event.extendedProps);
 
-    console.log(this.editEventForm.value);
+    if (this.editEventForm.value.title !== '')
+      this.data().event.setProp('title', this.editEventForm.value.title);
 
-    this.editEventForm.patchValue({
-      allDay: this.editEventForm.value.allDay,
-      title: this.editEventForm.value.title,
-      familyMember: this.editEventForm.value.familyMember,
-      startDate: this.editEventForm.value.startDate,
-      endDate: this.editEventForm.value.endDate,
-    });
+    // if (this.editEventForm.value.familyMember !== '')
+    //   this.data().event.extendedProps.setExtendedProp(
+    //     'familyMember',
+    //     this.editEventForm.value.familyMember
+    //   );
 
-    console.log(this.editEventForm.value);
+    if (this.editEventForm.value.startDate !== '')
+      this.data().event.setStart(this.editEventForm.value.startDate);
+
+    if (this.editEventForm.value.endDate !== '')
+      this.data().event.setEnd(this.editEventForm.value.endDate);
+
+    this.data().event.setAllDay(this.editEventForm.value.allDay);
 
     this.visible.set(false);
     this.editEventForm.reset();
