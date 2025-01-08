@@ -7,7 +7,18 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DatePickerModule } from 'primeng/datepicker';
 import { EditEventDialogStateService } from '../../services/edit-event-dialog-state.service';
 import { SelectionInfoService } from '../../services/selection-info.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+
+interface FamilyMember {
+  name: string;
+  color: string;
+  textColor: string;
+}
 
 @Component({
   selector: 'app-edit-dialog',
@@ -30,11 +41,13 @@ export class EditDialogComponent {
   data = this.selectionService.getEventClick();
 
   editEventForm = new FormGroup({
-    allDay: new FormControl<boolean | null>(null),
-    title: new FormControl<string>(''),
-    familyMember: new FormControl<string>(''),
-    startDate: new FormControl<string>(''),
-    endDate: new FormControl<string>(''),
+    allDay: new FormControl<boolean | null>(null, [Validators.required]),
+    title: new FormControl<string>('', [Validators.required]),
+    familyMember: new FormControl<FamilyMember | null>(null, [
+      Validators.required,
+    ]),
+    startDate: new FormControl<Date | null>(null, [Validators.required]),
+    endDate: new FormControl<Date | null>(null, [Validators.required]),
   });
 
   familyMembers = [
@@ -64,24 +77,44 @@ export class EditDialogComponent {
   editEvent() {
     console.log(this.data());
     console.log(this.data().event.extendedProps);
+    console.log(this.editEventForm.value);
 
     if (this.editEventForm.value.title !== '')
       this.data().event.setProp('title', this.editEventForm.value.title);
 
-    // if (this.editEventForm.value.familyMember !== '')
-    //   this.data().event.extendedProps.setExtendedProp(
-    //     'familyMember',
-    //     this.editEventForm.value.familyMember
-    //   );
+    if (this.editEventForm.value.familyMember?.name !== '') {
+      this.data().event.setExtendedProp(
+        'familyMember',
+        this.editEventForm.value.familyMember?.name
+      );
+      this.data().event.setExtendedProp(
+        'color',
+        this.editEventForm.value.familyMember?.color
+      );
+      this.data().event.setProp(
+        'backgroundColor',
+        this.editEventForm.value.familyMember?.color
+      );
+      this.data().event.setProp(
+        'borderColor',
+        this.editEventForm.value.familyMember?.color
+      );
+    }
 
-    if (this.editEventForm.value.startDate !== '')
-      this.data().event.setStart(this.editEventForm.value.startDate);
-
-    if (this.editEventForm.value.endDate !== '')
-      this.data().event.setEnd(this.editEventForm.value.endDate);
-
-    this.data().event.setAllDay(this.editEventForm.value.allDay);
-
+    if (
+      this.editEventForm.value.startDate !== null ||
+      this.editEventForm.value.endDate !== null
+    ) {
+      const correctEndDay = this.editEventForm.value.endDate?.setDate(
+        this.editEventForm.value.endDate?.getDate() + 1
+      );
+      this.data().event.setDates(
+        this.editEventForm.value.startDate,
+        //this.editEventForm.value.endDate,
+        correctEndDay,
+        { allDay: this.editEventForm.value.allDay }
+      );
+    }
     this.visible.set(false);
     this.editEventForm.reset();
   }

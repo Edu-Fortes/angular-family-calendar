@@ -43,21 +43,27 @@ export class CreateDialogComponent {
   }
 
   formatedDate: Signal<any> = computed(() => {
-    const startDate: any = new Date(this.selection().startStr)
-    const endDate: any = new Date(this.selection().endStr)
+    const startDate: any = new Date(this.selection().startStr);
+    const endDate: any = new Date(this.selection().endStr);
     const options: FormatDateOptions = {
       separator: ' a ',
       month: 'long',
       year: 'numeric',
       day: 'numeric',
       locale: 'pt-BR',
-    }
+    };
 
-    const numberOfSelectedDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+    const numberOfSelectedDays = Math.floor(
+      (endDate - startDate) / (1000 * 60 * 60 * 24)
+    );
 
     if (numberOfSelectedDays === 1)
-      return formatDate(this.selection().startStr, options)
-    else return formatRange(this.selection().startStr, this.selection().endStr, { ...options, isEndExclusive: true })
+      return formatDate(this.selection().startStr, options);
+    else
+      return formatRange(this.selection().startStr, this.selection().endStr, {
+        ...options,
+        isEndExclusive: true,
+      });
   });
 
   createEventForm = new FormGroup({
@@ -70,7 +76,7 @@ export class CreateDialogComponent {
     {
       name: 'Toda a família',
       color: 'Aquamarine',
-      textColor: 'DarkSlateGray'
+      textColor: 'DarkSlateGray',
     },
     {
       name: 'Mãe',
@@ -102,7 +108,7 @@ export class CreateDialogComponent {
       allDay: this.createEventForm.value.allDay ?? false,
       color: this.createEventForm.value.familyMember?.color ?? 'sky',
       textColor: this.createEventForm.value.familyMember?.textColor,
-      familyMember: this.createEventForm.value.familyMember?.name
+      familyMember: this.createEventForm.value.familyMember?.name,
     });
 
     this.visible.set(false);
