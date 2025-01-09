@@ -80,8 +80,8 @@ export class CreateDialogComponent {
       (endDate - startDate) / (1000 * 60 * 60 * 24)
     );
 
-    if (numberOfSelectedDays > 1) return true;
-    return null;
+    if (numberOfSelectedDays <= 1) return this.createEventForm.value.allDay;
+    return true;
   };
 
   familyMembers = [
