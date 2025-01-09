@@ -7,12 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DatePickerModule } from 'primeng/datepicker';
 import { EditEventDialogStateService } from '../../services/edit-event-dialog-state.service';
 import { SelectionInfoService } from '../../services/selection-info.service';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 interface FamilyMember {
   name: string;
@@ -34,21 +29,22 @@ interface FamilyMember {
   templateUrl: './edit-dialog.component.html',
   styleUrl: './edit-dialog.component.css',
 })
-export class EditDialogComponent {
+export class EditDialogComponent implements OnInit {
   private stateService = inject(EditEventDialogStateService);
   private selectionService = inject(SelectionInfoService);
   visible = this.stateService.getState();
   data = this.selectionService.getEventClick();
+  editEventForm: FormGroup | undefined | any;
 
-  editEventForm = new FormGroup({
-    allDay: new FormControl<boolean | null>(null, [Validators.required]),
-    title: new FormControl<string>('', [Validators.required]),
-    familyMember: new FormControl<FamilyMember | null>(null, [
-      Validators.required,
-    ]),
-    startDate: new FormControl<Date | null>(null, [Validators.required]),
-    endDate: new FormControl<Date | null>(null, [Validators.required]),
-  });
+  ngOnInit(): void {
+    this.editEventForm = new FormGroup({
+      allDay: new FormControl<boolean>(false),
+      title: new FormControl<string>(''),
+      familyMember: new FormControl<FamilyMember | null>(null),
+      startDate: new FormControl<Date | null>(null),
+      endDate: new FormControl<Date | null>(null),
+    });
+  }
 
   familyMembers = [
     {
@@ -62,7 +58,7 @@ export class EditDialogComponent {
     },
     {
       name: 'Pai',
-      color: 'yellow',
+      color: 'black',
     },
     {
       name: 'Filho',
@@ -108,13 +104,14 @@ export class EditDialogComponent {
       const correctEndDay = this.editEventForm.value.endDate?.setDate(
         this.editEventForm.value.endDate?.getDate() + 1
       );
+
       this.data().event.setDates(
         this.editEventForm.value.startDate,
-        //this.editEventForm.value.endDate,
         correctEndDay,
         { allDay: this.editEventForm.value.allDay }
       );
     }
+
     this.visible.set(false);
     this.editEventForm.reset();
   }

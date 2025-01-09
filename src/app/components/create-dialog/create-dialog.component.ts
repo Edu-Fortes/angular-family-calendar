@@ -72,6 +72,18 @@ export class CreateDialogComponent {
     familyMember: new FormControl<FamilyMember | null>(null),
   });
 
+  handleAllDay = () => {
+    const startDate: any = new Date(this.selection().startStr);
+    const endDate: any = new Date(this.selection().endStr);
+
+    const numberOfSelectedDays = Math.floor(
+      (endDate - startDate) / (1000 * 60 * 60 * 24)
+    );
+
+    if (numberOfSelectedDays > 1) return true;
+    return null;
+  };
+
   familyMembers = [
     {
       name: 'Toda a família',
@@ -84,7 +96,7 @@ export class CreateDialogComponent {
     },
     {
       name: 'Pai',
-      color: 'yellow',
+      color: 'black',
     },
     {
       name: 'Filho',
@@ -105,7 +117,7 @@ export class CreateDialogComponent {
       title: this.createEventForm.value.eventTitle ?? 'Evento sem título',
       start: this.selection().start,
       end: this.selection().end,
-      allDay: this.createEventForm.value.allDay ?? false,
+      allDay: this.handleAllDay() ?? false,
       color: this.createEventForm.value.familyMember?.color ?? 'sky',
       textColor: this.createEventForm.value.familyMember?.textColor,
       familyMember: this.createEventForm.value.familyMember?.name,

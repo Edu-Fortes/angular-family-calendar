@@ -129,5 +129,6 @@ export class CalendarComponent {
   handleEventClick(eventClickInfo: EventClickArg) {
     this.editStateService.setState(true);
     this.selectionService.setEventClick(eventClickInfo);
+    console.log('Log do eventClick: ', eventClickInfo.event);
   }
 }
