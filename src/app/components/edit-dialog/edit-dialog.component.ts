@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { SelectModule } from 'primeng/select';
@@ -7,7 +7,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DatePickerModule } from 'primeng/datepicker';
 import { EditEventDialogStateService } from '../../services/edit-event-dialog-state.service';
 import { SelectionInfoService } from '../../services/selection-info.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
+import { formatDate } from '@fullcalendar/core';
 
 interface FamilyMember {
   name: string;
@@ -19,6 +25,7 @@ interface FamilyMember {
   selector: 'app-edit-dialog',
   imports: [
     ReactiveFormsModule,
+    FormsModule,
     DialogModule,
     SelectModule,
     ButtonModule,
@@ -29,22 +36,20 @@ interface FamilyMember {
   templateUrl: './edit-dialog.component.html',
   styleUrl: './edit-dialog.component.css',
 })
-export class EditDialogComponent implements OnInit {
+export class EditDialogComponent {
   private stateService = inject(EditEventDialogStateService);
   private selectionService = inject(SelectionInfoService);
   visible = this.stateService.getState();
   data = this.selectionService.getEventClick();
-  editEventForm: FormGroup | undefined | any;
+  eventData = this.selectionService.getEventData();
 
-  ngOnInit(): void {
-    this.editEventForm = new FormGroup({
-      allDay: new FormControl<boolean>(false),
-      title: new FormControl<string>(''),
-      familyMember: new FormControl<FamilyMember | null>(null),
-      startDate: new FormControl<Date | null>(null),
-      endDate: new FormControl<Date | null>(null),
-    });
-  }
+  editEventForm: FormGroup = new FormGroup({
+    allDay: new FormControl<boolean>(true),
+    title: new FormControl<string>(''),
+    familyMember: new FormControl<FamilyMember | null>(null),
+    startDate: new FormControl<Date | null>(null),
+    endDate: new FormControl<Date | null>(null),
+  });
 
   familyMembers = [
     {
@@ -70,13 +75,22 @@ export class EditDialogComponent implements OnInit {
     },
   ];
 
+  startDate = () => formatDate(this.eventData().startStr);
+  endDate = () => formatDate(this.eventData().endStr);
+  familyMember = () => this.eventData().familyMember;
+  title = () => this.eventData().title;
+
   editEvent() {
     console.log(this.data());
     console.log(this.data().event.extendedProps);
     console.log(this.editEventForm.value);
 
-    if (this.editEventForm.value.title !== '')
-      this.data().event.setProp('title', this.editEventForm.value.title);
+    if (
+      this.editEventForm.value.title === '' ||
+      this.editEventForm.value.title === null
+    ) {
+      this.data().event.setProp('title', this.title());
+    } else this.data().event.setProp('title', this.editEventForm.value.title);
 
     if (this.editEventForm.value.familyMember?.name !== '') {
       this.data().event.setExtendedProp(

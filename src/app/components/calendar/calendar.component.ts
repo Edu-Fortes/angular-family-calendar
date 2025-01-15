@@ -130,5 +130,13 @@ export class CalendarComponent {
     this.editStateService.setState(true);
     this.selectionService.setEventClick(eventClickInfo);
     console.log('Log do eventClick: ', eventClickInfo.event);
+
+    this.selectionService.setEventData({
+      title: eventClickInfo.event.title,
+      allDay: eventClickInfo.event.allDay,
+      startStr: eventClickInfo.event.startStr,
+      endStr: eventClickInfo.event.endStr,
+      ...eventClickInfo.event.extendedProps,
+    });
   }
 }

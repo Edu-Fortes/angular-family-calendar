@@ -1,4 +1,8 @@
-<form [formGroup]="editEventForm" class="card flex justify-center max-w-full">
+<form
+  [formGroup]="editEventForm"
+  (ngSubmit)="editEvent()"
+  class="card flex justify-center max-w-full"
+>
   <p-dialog
     header="Editar evento"
     closeOnEscape="true"
@@ -6,10 +10,6 @@
     [(visible)]="visible"
     [style]="{ width: '35rem' }"
   >
-    <div>
-      <!-- <p>Título: {{ data() }}</p> -->
-      <!-- <p>Data: {{ formatedDate() }}</p> -->
-    </div>
     <div>
       <div class="flex flex-col gap-6 mb-6">
         <div class="flex justify-between items-center">
@@ -19,6 +19,7 @@
               formControlName="startDate"
               inputId="start-datepicker"
               dateFormat="dd-M-yy"
+              placeholder="{{ startDate() }}"
             />
             <small id="start-datepicker"
               >Selecione uma nova data de início
@@ -35,6 +36,7 @@
             formControlName="endDate"
             inputId="end-datepicker"
             dateFormat="dd-M-yy"
+            placeholder="{{ endDate() }}"
           />
           <small id="end-datepicker">Selecione uma nova data de término </small>
         </div>
@@ -48,6 +50,7 @@
         formControlName="familyMember"
         [options]="familyMembers"
         optionLabel="name"
+        placeholder="{{ familyMember() }}"
       />
       <small id="edit_family-member-help">Altera o membro da família</small>
     </div>
@@ -59,6 +62,7 @@
         id="edit_title"
         autocomplete="off"
         class="flex-auto w-full"
+        placeholder="{{ title() }}"
       />
       <small id="edit_title-help">Altera o título do evento</small>
     </div>
@@ -69,12 +73,7 @@
         severity="danger"
         (click)="visible.set(false)"
       />
-      <p-button
-        type="submit"
-        icon="pi pi-check"
-        [rounded]="true"
-        (click)="editEvent()"
-      />
+      <p-button type="submit" icon="pi pi-check" [rounded]="true" />
     </div>
   </p-dialog>
 </form>

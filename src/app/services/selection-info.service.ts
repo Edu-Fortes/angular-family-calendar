@@ -5,7 +5,7 @@ import { DateSelectArg, EventClickArg } from '@fullcalendar/core';
   providedIn: 'root',
 })
 export class SelectionInfoService {
-  constructor() { }
+  constructor() {}
 
   private selectionInfo: WritableSignal<DateSelectArg> = signal({
     start: new Date(),
@@ -19,6 +19,8 @@ export class SelectionInfoService {
 
   private eventClickInfo: any = signal({}); // ARRUMAR MUITO ESSE TIPO
 
+  private eventData: any = signal({});
+
   setData(update: DateSelectArg) {
     this.selectionInfo.set(update);
   }
@@ -27,11 +29,20 @@ export class SelectionInfoService {
     return this.selectionInfo;
   }
 
-  setEventClick(update: any) {// ARRUMAR ESSE TIPO
-    this.eventClickInfo.set(update)
+  setEventClick(update: any) {
+    // ARRUMAR ESSE TIPO
+    this.eventClickInfo.set(update);
   }
 
   getEventClick() {
-    return this.eventClickInfo
+    return this.eventClickInfo;
+  }
+
+  setEventData(update: any) {
+    this.eventData.set(update);
+  }
+
+  getEventData() {
+    return this.eventData;
   }
 }
