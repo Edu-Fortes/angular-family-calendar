@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {
   CalendarOptions,
@@ -8,9 +8,8 @@ import {
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
-import { CreateEventDialogStateService } from '../../services/create-event-dialog-state.service';
+import { DialogHandlerService } from '../../services/dialog-handler.service';
 import { SelectionInfoService } from '../../services/selection-info.service';
-import { EditEventDialogStateService } from '../../services/edit-event-dialog-state.service';
 
 @Component({
   selector: 'app-calendar',
@@ -19,11 +18,9 @@ import { EditEventDialogStateService } from '../../services/edit-event-dialog-st
   styleUrl: './calendar.component.css',
 })
 export class CalendarComponent {
-  constructor(
-    private dataService: CreateEventDialogStateService,
-    private selectionService: SelectionInfoService,
-    private editStateService: EditEventDialogStateService
-  ) {}
+  private dialogService = inject(DialogHandlerService);
+
+  constructor(private selectionService: SelectionInfoService) {}
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, listPlugin],
@@ -116,18 +113,18 @@ export class CalendarComponent {
     dayMaxEvents: true,
     selectable: true,
     selectMirror: true,
-    select: this.handleDateSelect.bind(this), // arrumar metodo para grava no BD
+    select: this.handleDateSelect.bind(this),
     editable: true,
     eventClick: this.handleEventClick.bind(this),
   };
 
   handleDateSelect(selectInfo: DateSelectArg) {
-    this.dataService.setData(true);
+    this.dialogService.openCreateEvent();
     this.selectionService.setData(selectInfo);
   }
 
   handleEventClick(eventClickInfo: EventClickArg) {
-    this.editStateService.setState(true);
+    this.dialogService.openEditEvent();
     this.selectionService.setEventClick(eventClickInfo);
     console.log('Log do eventClick: ', eventClickInfo.event);
 

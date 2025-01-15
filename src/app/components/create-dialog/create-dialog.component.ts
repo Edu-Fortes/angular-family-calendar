@@ -1,6 +1,6 @@
-import { Component, computed, Signal } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CreateEventDialogStateService } from '../../services/create-event-dialog-state.service';
+import { DialogHandlerService } from '../../services/dialog-handler.service';
 import { SelectionInfoService } from '../../services/selection-info.service';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -31,14 +31,12 @@ interface FamilyMember {
   styleUrl: './create-dialog.component.css',
 })
 export class CreateDialogComponent {
-  visible;
+  private dialogService = inject(DialogHandlerService);
+
+  visible = this.dialogService.createEventState();
   selection;
 
-  constructor(
-    private dataService: CreateEventDialogStateService,
-    private selectionService: SelectionInfoService
-  ) {
-    this.visible = this.dataService.getData();
+  constructor(private selectionService: SelectionInfoService) {
     this.selection = this.selectionService.getData();
   }
 
@@ -123,7 +121,7 @@ export class CreateDialogComponent {
       familyMember: this.createEventForm.value.familyMember?.name,
     });
 
-    this.visible.set(false);
+    this.dialogService.closeCreateEvent();
     this.createEventForm.reset();
   }
 }

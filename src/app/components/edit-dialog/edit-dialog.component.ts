@@ -5,8 +5,8 @@ import { SelectModule } from 'primeng/select';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { DatePickerModule } from 'primeng/datepicker';
-import { EditEventDialogStateService } from '../../services/edit-event-dialog-state.service';
 import { SelectionInfoService } from '../../services/selection-info.service';
+import { DialogHandlerService } from '../../services/dialog-handler.service';
 import {
   FormControl,
   FormGroup,
@@ -37,9 +37,11 @@ interface FamilyMember {
   styleUrl: './edit-dialog.component.css',
 })
 export class EditDialogComponent {
-  private stateService = inject(EditEventDialogStateService);
+  private dialogService = inject(DialogHandlerService);
   private selectionService = inject(SelectionInfoService);
-  visible = this.stateService.getState();
+
+  visible = this.dialogService.editEventState();
+
   data = this.selectionService.getEventClick();
   eventData = this.selectionService.getEventData();
 
