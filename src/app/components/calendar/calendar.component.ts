@@ -10,6 +10,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import { DialogHandlerService } from '../../services/dialog-handler.service';
 import { SelectionInfoService } from '../../services/selection-info.service';
+import { CalendarInteractionService } from '../../services/calendar-interaction.service';
 
 @Component({
   selector: 'app-calendar',
@@ -19,6 +20,7 @@ import { SelectionInfoService } from '../../services/selection-info.service';
 })
 export class CalendarComponent {
   private dialogService = inject(DialogHandlerService);
+  private calendarInteractionService = inject(CalendarInteractionService);
 
   constructor(private selectionService: SelectionInfoService) {}
 
@@ -118,11 +120,14 @@ export class CalendarComponent {
     eventClick: this.handleEventClick.bind(this),
   };
 
+  // function receives as param the selected clicked dates (selectInfo)
   handleDateSelect(selectInfo: DateSelectArg) {
     this.dialogService.openCreateEvent();
+    this.calendarInteractionService.setDateSelection(selectInfo);
     this.selectionService.setData(selectInfo);
   }
 
+  // receive as param the clicked event (eventClickInfo)
   handleEventClick(eventClickInfo: EventClickArg) {
     this.dialogService.openEditEvent();
     this.selectionService.setEventClick(eventClickInfo);

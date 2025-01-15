@@ -1,7 +1,6 @@
 import { Component, computed, inject, Signal } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DialogHandlerService } from '../../services/dialog-handler.service';
-import { SelectionInfoService } from '../../services/selection-info.service';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -9,6 +8,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { formatDate, FormatDateOptions, formatRange } from '@fullcalendar/core';
+import { CalendarInteractionService } from '../../services/calendar-interaction.service';
 
 interface FamilyMember {
   name: string;
@@ -32,17 +32,14 @@ interface FamilyMember {
 })
 export class CreateDialogComponent {
   private dialogService = inject(DialogHandlerService);
+  private calendarInteractionService = inject(CalendarInteractionService);
 
   visible = this.dialogService.createEventState();
-  selection;
-
-  constructor(private selectionService: SelectionInfoService) {
-    this.selection = this.selectionService.getData();
-  }
+  dateSelection = this.calendarInteractionService.getDateSelection();
 
   formatedDate: Signal<any> = computed(() => {
-    const startDate: any = new Date(this.selection().startStr);
-    const endDate: any = new Date(this.selection().endStr);
+    const startDate: any = new Date(this.dateSelection().startStr);
+    const endDate: any = new Date(this.dateSelection().endStr);
     const options: FormatDateOptions = {
       separator: ' a ',
       month: 'long',
@@ -56,12 +53,16 @@ export class CreateDialogComponent {
     );
 
     if (numberOfSelectedDays === 1)
-      return formatDate(this.selection().startStr, options);
+      return formatDate(this.dateSelection().startStr, options);
     else
-      return formatRange(this.selection().startStr, this.selection().endStr, {
-        ...options,
-        isEndExclusive: true,
-      });
+      return formatRange(
+        this.dateSelection().startStr,
+        this.dateSelection().endStr,
+        {
+          ...options,
+          isEndExclusive: true,
+        }
+      );
   });
 
   createEventForm = new FormGroup({
@@ -71,8 +72,8 @@ export class CreateDialogComponent {
   });
 
   handleAllDay = () => {
-    const startDate: any = new Date(this.selection().startStr);
-    const endDate: any = new Date(this.selection().endStr);
+    const startDate: any = new Date(this.dateSelection().startStr);
+    const endDate: any = new Date(this.dateSelection().endStr);
 
     const numberOfSelectedDays = Math.floor(
       (endDate - startDate) / (1000 * 60 * 60 * 24)
@@ -107,14 +108,14 @@ export class CreateDialogComponent {
   ];
 
   createEvent() {
-    this.selection().jsEvent?.preventDefault();
+    this.dateSelection().jsEvent?.preventDefault();
 
-    const calendarApi = this.selection().view.calendar;
+    const calendarApi = this.dateSelection().view.calendar;
 
     calendarApi.addEvent({
       title: this.createEventForm.value.eventTitle ?? 'Evento sem título',
-      start: this.selection().start,
-      end: this.selection().end,
+      start: this.dateSelection().start,
+      end: this.dateSelection().end,
       allDay: this.handleAllDay() ?? false,
       color: this.createEventForm.value.familyMember?.color ?? 'sky',
       textColor: this.createEventForm.value.familyMember?.textColor,
