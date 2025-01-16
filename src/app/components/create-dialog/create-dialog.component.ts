@@ -9,12 +9,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { DatesHandlerService } from '../../services/dates-handler/dates-handler.service';
-
-interface FamilyMember {
-  name: string;
-  color: string;
-  textColor: string;
-}
+import { FamilyMember } from '../../models/family-member.interface';
+import { familyMembers } from '../../models/family-members.data';
 
 @Component({
   selector: 'app-create-dialog',
@@ -37,12 +33,23 @@ export class CreateDialogComponent {
 
   visible = this.dialogService.createEventState();
   dateSelection = this.calendarInteractionService.getDateSelection();
+  familyMembers: FamilyMember[] = familyMembers;
 
   formatedDate: Signal<string> = computed(() => {
     return this.dateHandler.formatedDate(
       this.dateSelection().startStr,
       this.dateSelection().endStr
     );
+  });
+
+  createEventForm = new FormGroup({
+    allDay: new FormControl<boolean>(false),
+    eventTitle: new FormControl<string | null>(null),
+    familyMember: new FormControl<FamilyMember>({
+      name: 'Toda a família',
+      color: 'Aquamarine',
+      textColor: 'DarkSlateGray',
+    }),
   });
 
   allDay: Signal<boolean> = computed(() => {
@@ -54,35 +61,29 @@ export class CreateDialogComponent {
     return true;
   });
 
-  createEventForm = new FormGroup({
-    allDay: new FormControl<boolean>(false),
-    eventTitle: new FormControl<string | null>(null),
-    familyMember: new FormControl<FamilyMember | null>(null),
-  });
-
-  familyMembers = [
-    {
-      name: 'Toda a família',
-      color: 'Aquamarine',
-      textColor: 'DarkSlateGray',
-    },
-    {
-      name: 'Mãe',
-      color: 'red',
-    },
-    {
-      name: 'Pai',
-      color: 'black',
-    },
-    {
-      name: 'Filho',
-      color: 'green',
-    },
-    {
-      name: 'Filha',
-      color: 'pink',
-    },
-  ];
+  // familyMembers = [
+  //   {
+  //     name: 'Toda a família',
+  //     color: 'Aquamarine',
+  //     textColor: 'DarkSlateGray',
+  //   },
+  //   {
+  //     name: 'Mãe',
+  //     color: 'red',
+  //   },
+  //   {
+  //     name: 'Pai',
+  //     color: 'black',
+  //   },
+  //   {
+  //     name: 'Filho',
+  //     color: 'green',
+  //   },
+  //   {
+  //     name: 'Filha',
+  //     color: 'pink',
+  //   },
+  // ];
 
   createEvent() {
     this.dateSelection().jsEvent?.preventDefault();
@@ -95,11 +96,12 @@ export class CreateDialogComponent {
       end: this.dateSelection().end,
       allDay: this.allDay(),
       color: this.createEventForm.value.familyMember?.color ?? 'sky',
-      textColor: this.createEventForm.value.familyMember?.textColor,
-      familyMember: this.createEventForm.value.familyMember?.name,
+      textColor: this.createEventForm.value.familyMember?.textColor ?? 'white',
+      familyMember:
+        this.createEventForm.value.familyMember?.name ?? 'Não selecionado',
     });
 
     this.dialogService.closeCreateEvent();
-    this.createEventForm.reset();
+    this.createEventForm.reset(this.createEventForm.value);
   }
 }
