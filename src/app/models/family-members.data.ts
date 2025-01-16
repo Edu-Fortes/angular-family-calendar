@@ -1,4 +1,8 @@
-import { FamilyMember } from './family-member.interface';
+export interface FamilyMember {
+  name: string;
+  color: string;
+  textColor?: string;
+}
 
 export const familyMembers: FamilyMember[] = [
   {

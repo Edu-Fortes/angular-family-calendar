@@ -9,7 +9,6 @@ import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import { DialogHandlerService } from '../../services/dialog-handler/dialog-handler.service';
-import { SelectionInfoService } from '../../services/selection-info.service';
 import { CalendarInteractionService } from '../../services/calendar-interaction/calendar-interaction.service';
 
 @Component({

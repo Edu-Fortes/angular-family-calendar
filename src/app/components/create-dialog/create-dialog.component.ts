@@ -9,8 +9,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { DatesHandlerService } from '../../services/dates-handler/dates-handler.service';
-import { FamilyMember } from '../../models/family-member.interface';
-import { familyMembers } from '../../models/family-members.data';
+import { FamilyMember, familyMembers } from '../../models/family-members.data';
 
 @Component({
   selector: 'app-create-dialog',
@@ -60,30 +59,6 @@ export class CreateDialogComponent {
     if (!moreThanOneDay) return this.createEventForm.value.allDay ?? false;
     return true;
   });
-
-  // familyMembers = [
-  //   {
-  //     name: 'Toda a família',
-  //     color: 'Aquamarine',
-  //     textColor: 'DarkSlateGray',
-  //   },
-  //   {
-  //     name: 'Mãe',
-  //     color: 'red',
-  //   },
-  //   {
-  //     name: 'Pai',
-  //     color: 'black',
-  //   },
-  //   {
-  //     name: 'Filho',
-  //     color: 'green',
-  //   },
-  //   {
-  //     name: 'Filha',
-  //     color: 'pink',
-  //   },
-  // ];
 
   createEvent() {
     this.dateSelection().jsEvent?.preventDefault();
