@@ -7,27 +7,27 @@ export class DialogHandlerService {
   private createEventVisible: WritableSignal<boolean> = signal(false);
   private editEventVisible: WritableSignal<boolean> = signal(false);
 
-  openCreateEvent() {
+  openCreateEvent(): void {
     this.createEventVisible.set(true);
   }
 
-  closeCreateEvent() {
+  closeCreateEvent(): void {
     this.createEventVisible.set(false);
   }
 
-  createEventState() {
+  createEventState(): WritableSignal<boolean> {
     return this.createEventVisible;
   }
 
-  openEditEvent() {
+  openEditEvent(): void {
     this.editEventVisible.set(true);
   }
 
-  closeEditEvent() {
+  closeEditEvent(): void {
     this.editEventVisible.set(false);
   }
 
-  editEventState() {
+  editEventState(): WritableSignal<boolean> {
     return this.editEventVisible;
   }
 }

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DialogHandlerService } from './dialog-handler.service';
+import { DatesHandlerService } from './dates-handler.service';
 
-describe('DialogHandlerService', () => {
-  let service: DialogHandlerService;
+describe('DatesHandlerService', () => {
+  let service: DatesHandlerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(DialogHandlerService);
+    service = TestBed.inject(DatesHandlerService);
   });
 
   it('should be created', () => {

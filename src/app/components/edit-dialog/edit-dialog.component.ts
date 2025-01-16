@@ -6,7 +6,7 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { DatePickerModule } from 'primeng/datepicker';
 import { SelectionInfoService } from '../../services/selection-info.service';
-import { DialogHandlerService } from '../../services/dialog-handler.service';
+import { DialogHandlerService } from '../../services/dialog-handler/dialog-handler.service';
 import {
   FormControl,
   FormGroup,

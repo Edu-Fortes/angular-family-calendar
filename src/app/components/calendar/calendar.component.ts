@@ -8,9 +8,9 @@ import {
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
-import { DialogHandlerService } from '../../services/dialog-handler.service';
+import { DialogHandlerService } from '../../services/dialog-handler/dialog-handler.service';
 import { SelectionInfoService } from '../../services/selection-info.service';
-import { CalendarInteractionService } from '../../services/calendar-interaction.service';
+import { CalendarInteractionService } from '../../services/calendar-interaction/calendar-interaction.service';
 
 @Component({
   selector: 'app-calendar',
@@ -22,7 +22,7 @@ export class CalendarComponent {
   private dialogService = inject(DialogHandlerService);
   private calendarInteractionService = inject(CalendarInteractionService);
 
-  constructor(private selectionService: SelectionInfoService) {}
+  // constructor(private selectionService: SelectionInfoService) {}
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, listPlugin],
@@ -124,21 +124,21 @@ export class CalendarComponent {
   handleDateSelect(selectInfo: DateSelectArg) {
     this.dialogService.openCreateEvent();
     this.calendarInteractionService.setDateSelection(selectInfo);
-    this.selectionService.setData(selectInfo);
+    // this.selectionService.setData(selectInfo);
   }
 
   // receive as param the clicked event (eventClickInfo)
   handleEventClick(eventClickInfo: EventClickArg) {
     this.dialogService.openEditEvent();
-    this.selectionService.setEventClick(eventClickInfo);
+    // this.selectionService.setEventClick(eventClickInfo);
     console.log('Log do eventClick: ', eventClickInfo.event);
 
-    this.selectionService.setEventData({
-      title: eventClickInfo.event.title,
-      allDay: eventClickInfo.event.allDay,
-      startStr: eventClickInfo.event.startStr,
-      endStr: eventClickInfo.event.endStr,
-      ...eventClickInfo.event.extendedProps,
-    });
+    // this.selectionService.setEventData({
+    //   title: eventClickInfo.event.title,
+    //   allDay: eventClickInfo.event.allDay,
+    //   startStr: eventClickInfo.event.startStr,
+    //   endStr: eventClickInfo.event.endStr,
+    //   ...eventClickInfo.event.extendedProps,
+    // });
   }
 }
