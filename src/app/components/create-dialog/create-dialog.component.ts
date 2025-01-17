@@ -1,5 +1,5 @@
 import { Component, computed, inject, Signal } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DialogHandlerService } from '../../services/dialog-handler/dialog-handler.service';
 import { CalendarInteractionService } from '../../services/calendar-interaction/calendar-interaction.service';
 import { DialogModule } from 'primeng/dialog';
@@ -29,6 +29,7 @@ export class CreateDialogComponent {
   private dialogService = inject(DialogHandlerService);
   private calendarInteractionService = inject(CalendarInteractionService);
   private dateHandler = inject(DatesHandlerService);
+  private formBuilder = inject(FormBuilder);
 
   visible = this.dialogService.createEventState();
   dateSelection = this.calendarInteractionService.getDateSelection();
@@ -41,14 +42,14 @@ export class CreateDialogComponent {
     );
   });
 
-  createEventForm = new FormGroup({
-    allDay: new FormControl<boolean>(false),
-    eventTitle: new FormControl<string | null>(null),
-    familyMember: new FormControl<FamilyMember>({
+  createEventForm = this.formBuilder.nonNullable.group({
+    allDay: true,
+    eventTitle: '',
+    familyMember: {
       name: 'Toda a família',
-      color: 'Aquamarine',
-      textColor: 'DarkSlateGray',
-    }),
+      color: 'sky',
+      textColor: 'white',
+    },
   });
 
   allDay: Signal<boolean> = computed(() => {
@@ -64,19 +65,27 @@ export class CreateDialogComponent {
     this.dateSelection().jsEvent?.preventDefault();
 
     const calendarApi = this.dateSelection().view.calendar;
+    const title = this.createEventForm.value.eventTitle
+      ? this.createEventForm.value.eventTitle
+      : 'Evento sem título';
+
+    const familyMember = this.createEventForm.value.familyMember;
+    if (!familyMember) {
+      console.error('Family member not selected');
+      return;
+    }
 
     calendarApi.addEvent({
-      title: this.createEventForm.value.eventTitle ?? 'Evento sem título',
-      start: this.dateSelection().start,
-      end: this.dateSelection().end,
+      title: title,
+      start: this.dateSelection().startStr,
+      end: this.dateSelection().endStr,
       allDay: this.allDay(),
-      color: this.createEventForm.value.familyMember?.color ?? 'sky',
-      textColor: this.createEventForm.value.familyMember?.textColor ?? 'white',
-      familyMember:
-        this.createEventForm.value.familyMember?.name ?? 'Não selecionado',
+      color: familyMember.color,
+      textColor: familyMember.textColor,
+      familyMember: familyMember.name,
     });
 
     this.dialogService.closeCreateEvent();
-    this.createEventForm.reset(this.createEventForm.value);
+    this.createEventForm.reset();
   }
 }

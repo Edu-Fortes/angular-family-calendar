@@ -7,8 +7,8 @@ export interface FamilyMember {
 export const familyMembers: FamilyMember[] = [
   {
     name: 'Toda a família',
-    color: 'Aquamarine',
-    textColor: 'DarkSlateGray',
+    color: 'sky',
+    textColor: 'white',
   },
   {
     name: 'Mãe',
