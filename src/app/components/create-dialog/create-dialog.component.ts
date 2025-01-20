@@ -1,5 +1,5 @@
 import { Component, computed, inject, Signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DialogHandlerService } from '../../services/dialog-handler/dialog-handler.service';
 import { CalendarInteractionService } from '../../services/calendar-interaction/calendar-interaction.service';
 import { DialogModule } from 'primeng/dialog';
@@ -10,6 +10,7 @@ import { Select } from 'primeng/select';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { DatesHandlerService } from '../../services/dates-handler/dates-handler.service';
 import { FamilyMember, familyMembers } from '../../models/family-members.data';
+import { CreateEventForm } from '../../models/form-input.interface';
 
 @Component({
   selector: 'app-create-dialog',
@@ -42,7 +43,7 @@ export class CreateDialogComponent {
     );
   });
 
-  createEventForm = this.formBuilder.nonNullable.group({
+  createEventForm: FormGroup = this.formBuilder.nonNullable.group<CreateEventForm>({
     allDay: true,
     eventTitle: '',
     familyMember: {

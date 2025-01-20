@@ -1,28 +1,14 @@
-<form
-  [formGroup]="editEventForm"
-  (ngSubmit)="editEvent()"
-  class="card flex justify-center max-w-full"
->
-  <p-dialog
-    header="Editar evento"
-    closeOnEscape="true"
-    maskStyleClass="backdrop-blur-sm bg-black/30"
-    [(visible)]="visible"
-    [style]="{ width: '35rem' }"
-  >
+<form [formGroup]="editEventForm" (ngSubmit)="editEvent()" class="card flex justify-center max-w-full">
+  <p-dialog header="Editar evento" closeOnEscape="true" maskStyleClass="backdrop-blur-sm bg-black/30"
+    [(visible)]="visible" [style]="{ width: '35rem' }">
     <div>
       <div class="flex flex-col gap-6 mb-6">
         <div class="flex justify-between items-center">
           <div class="flex flex-col">
             <label for="start-datepicker">Data de início</label>
-            <p-datepicker
-              formControlName="startDate"
-              inputId="start-datepicker"
-              dateFormat="dd-M-yy"
-              placeholder="{{ startDate() }}"
-            />
-            <small id="start-datepicker"
-              >Selecione uma nova data de início
+            <p-datepicker formControlName="startDateStr" inputId="start-datepicker" dateFormat="dd/mm/yy"
+              placeholder="{{placeholders()?.startDateStr}}" />
+            <small id="start-datepicker">Selecione uma nova data de início
             </small>
           </div>
           <div class="flex gap-4 items-start">
@@ -32,47 +18,26 @@
         </div>
         <div class="flex flex-col">
           <label for="end-datepicker">Data de término</label>
-          <p-datepicker
-            formControlName="endDate"
-            inputId="end-datepicker"
-            dateFormat="dd-M-yy"
-            placeholder="{{ endDate() }}"
-          />
+          <p-datepicker formControlName="endDateStr" inputId="end-datepicker" dateFormat="dd/mm/yy"
+            placeholder="{{placeholders()?.endDateStr}}" />
           <small id="end-datepicker">Selecione uma nova data de término </small>
         </div>
       </div>
     </div>
     <div class="mb-6">
       <label for="edit_family-member">Membro da família</label>
-      <p-select
-        inputId="edit_family-member"
-        class="w-full"
-        formControlName="familyMember"
-        [options]="familyMembers"
-        optionLabel="name"
-        placeholder="{{ familyMember() }}"
-      />
+      <p-select inputId="edit_family-member" class="w-full" formControlName="familyMember" [options]="familyMembers"
+        optionLabel="name" placeholder="{{placeholders()?.familyMember}}" />
       <small id="edit_family-member-help">Altera o membro da família</small>
     </div>
     <div class="mb-6">
       <label for="edit_title">Título</label>
-      <input
-        pInputText
-        formControlName="title"
-        id="edit_title"
-        autocomplete="off"
-        class="flex-auto w-full"
-        placeholder="{{ title() }}"
-      />
+      <input pInputText formControlName="eventTitle" id="edit_title" autocomplete="off" class="flex-auto w-full"
+        placeholder="{{placeholders()?.eventTitle}}" />
       <small id="edit_title-help">Altera o título do evento</small>
     </div>
     <div class="flex justify-end gap-4">
-      <p-button
-        icon="pi pi-times"
-        [rounded]="true"
-        severity="danger"
-        (click)="visible.set(false)"
-      />
+      <p-button icon="pi pi-times" [rounded]="true" severity="danger" (click)="visible.set(false)" />
       <p-button type="submit" icon="pi pi-check" [rounded]="true" />
     </div>
   </p-dialog>

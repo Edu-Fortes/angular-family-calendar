@@ -21,8 +21,6 @@ export class CalendarComponent {
   private dialogService = inject(DialogHandlerService);
   private calendarInteractionService = inject(CalendarInteractionService);
 
-  // constructor(private selectionService: SelectionInfoService) {}
-
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, listPlugin],
     initialView: 'dayGridMonth',
@@ -123,12 +121,13 @@ export class CalendarComponent {
   handleDateSelect(selectInfo: DateSelectArg) {
     this.dialogService.openCreateEvent();
     this.calendarInteractionService.setDateSelection(selectInfo);
-    // this.selectionService.setData(selectInfo);
   }
 
   // receive as param the clicked event (eventClickInfo)
   handleEventClick(eventClickInfo: EventClickArg) {
+    this.calendarInteractionService.setEventClick(eventClickInfo);
     this.dialogService.openEditEvent();
+
     // this.selectionService.setEventClick(eventClickInfo);
     console.log('Log do eventClick: ', eventClickInfo.event);
 
