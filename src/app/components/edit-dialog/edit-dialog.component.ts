@@ -14,9 +14,10 @@ import {
 } from '@angular/forms';
 import { CalendarInteractionService } from '../../services/calendar-interaction/calendar-interaction.service';
 import { FamilyMember, familyMembers } from '../../models/family-members.data';
-import { EventClickArg, FormatDateOptions } from '@fullcalendar/core/index.js';
-import { formatDate } from '@fullcalendar/core'
-import { CreateEventForm, EditEventForm } from '../../models/form-input.interface';
+import { FormatDateOptions } from '@fullcalendar/core/index.js';
+import { formatDate } from '@fullcalendar/core';
+import { EditEventForm } from '../../models/form-input.interface';
+import { DatesHandlerService } from '../../services/dates-handler/dates-handler.service';
 
 @Component({
   selector: 'app-edit-dialog',
@@ -37,13 +38,14 @@ export class EditDialogComponent {
   private dialogService = inject(DialogHandlerService);
   private calendarInteractionService = inject(CalendarInteractionService);
   private formBuilder = inject(FormBuilder);
+  private dateHandler = inject(DatesHandlerService);
 
   visible = this.dialogService.editEventState();
   eventData = this.calendarInteractionService.getEventClick();
   familyMembers: FamilyMember[] = familyMembers;
 
   placeholders = computed(() => {
-    const data = this.eventData().event
+    const data = this.eventData().event;
 
     if (data) {
       const formaterOptions: FormatDateOptions = {
@@ -51,19 +53,19 @@ export class EditDialogComponent {
         day: '2-digit',
         year: 'numeric',
         locale: 'pt-BR',
-      }
-      const startDate = formatDate(data.startStr, formaterOptions)
-      const endDate = formatDate(data.endStr, formaterOptions) //arrumar aqui para subtrair um dia
+      };
+      const startDate = formatDate(data.startStr, formaterOptions);
+      const endDate = this.dateHandler.excludeOneDayToEnd(data.endStr);
       return {
         allDay: data.allDay,
         eventTitle: data.title,
         startDateStr: startDate,
         endDateStr: endDate,
         familyMember: data.extendedProps['familyMember'],
-      }
+      };
     }
-    return
-  })
+    return;
+  });
 
   editEventForm: FormGroup = this.formBuilder.nonNullable.group<EditEventForm>({
     allDay: true,
@@ -73,95 +75,63 @@ export class EditDialogComponent {
       color: 'sky',
       textColor: 'white',
     },
-    startDateStr: '',
-    endDateStr: '',
+    startDate: '',
+    endDate: '',
   });
-
-
-
-  // editEventForm: FormGroup = new FormGroup({
-  //   allDay: new FormControl<boolean>(true),
-  //   title: new FormControl<string>(''),
-  //   familyMember: new FormControl<FamilyMember | null>(null),
-  //   startDate: new FormControl<Date | null>(null),
-  //   endDate: new FormControl<Date | null>(null),
-  // });
-
-  // startDate = () => formatDate(this.eventData().startStr);
-  // endDate = () => formatDate(this.eventData().endStr);
-  // familyMember = () => this.eventData().familyMember;
-  // title = () => this.eventData().title;
 
   editEvent() {
     console.log(this.editEventForm.value);
 
     if (this.editEventForm.value.eventTitle === '')
-      this.editEventForm.patchValue({ eventTitle: this.eventData().event.title })
+      this.editEventForm.patchValue({
+        eventTitle: this.eventData().event.title,
+      });
 
     if (this.editEventForm.value.familyMember.name === '')
-      this.editEventForm.patchValue({ familyMember: this.eventData().event.extendedProps['familyMember'] })
+      this.editEventForm.patchValue({
+        familyMember: this.eventData().event.extendedProps['familyMember'],
+      });
 
-    if (this.editEventForm.value.startDateStr === '')
-      this.editEventForm.patchValue({ startDateStr: this.eventData().event.startStr })
+    if (this.editEventForm.value.startDate === '')
+      this.editEventForm.patchValue({
+        startDate: this.eventData().event.start,
+      });
 
-    if (this.editEventForm.value.endDateStr === '')
-      this.editEventForm.patchValue({ endDateStr: this.eventData().event.endStr })
+    if (this.editEventForm.value.endDate === '')
+      this.editEventForm.patchValue({
+        endDate: this.eventData().event.end,
+      });
 
     console.log('depois do patch', this.editEventForm.value);
 
     // change infos on calendar
-    this.eventData().event.setProp('title', this.editEventForm.value.eventTitle)
-    this.eventData().event.setExtendedProp('familyMember', this.editEventForm.value.familyMember?.name)
-    this.eventData().event.setProp('borderColor', this.editEventForm.value.familyMember?.color)
-    this.eventData().event.setProp('backgroundColor', this.editEventForm.value.familyMember?.color)
-    this.eventData().event.setProp('textColor', this.editEventForm.value.familyMember?.textColor)
-    this.eventData().event.setDates(this.editEventForm.value.startDateStr, this.editEventForm.value.endDateStr, { allDay: this.editEventForm.value.allDay })
+    this.eventData().event.setProp(
+      'title',
+      this.editEventForm.value.eventTitle
+    );
+    this.eventData().event.setExtendedProp(
+      'familyMember',
+      this.editEventForm.value.familyMember?.name
+    );
+    this.eventData().event.setProp(
+      'borderColor',
+      this.editEventForm.value.familyMember?.color
+    );
+    this.eventData().event.setProp(
+      'backgroundColor',
+      this.editEventForm.value.familyMember?.color
+    );
+    this.eventData().event.setProp(
+      'textColor',
+      this.editEventForm.value.familyMember?.textColor
+    );
+    this.eventData().event.setDates(
+      this.editEventForm.value.startDate,
+      this.dateHandler.addOneDayToEndDate(this.editEventForm.value.endDate),
+      { allDay: this.editEventForm.value.allDay } //quando muitos dias dá para settar allDay para false, quando selecionado somente o allday, plota dois dias
+    );
 
-
-
-
-    console.log(this.eventData())
-
-    // if (
-    //   this.editEventForm.value.title === '' ||
-    //   this.editEventForm.value.title === null
-    // ) {
-    //   this.data().event.setProp('title', this.title());
-    // } else this.data().event.setProp('title', this.editEventForm.value.title);
-
-    // if (this.editEventForm.value.familyMember?.name !== '') {
-    //   this.data().event.setExtendedProp(
-    //     'familyMember',
-    //     this.editEventForm.value.familyMember?.name
-    //   );
-    //   this.data().event.setExtendedProp(
-    //     'color',
-    //     this.editEventForm.value.familyMember?.color
-    //   );
-    //   this.data().event.setProp(
-    //     'backgroundColor',
-    //     this.editEventForm.value.familyMember?.color
-    //   );
-    //   this.data().event.setProp(
-    //     'borderColor',
-    //     this.editEventForm.value.familyMember?.color
-    //   );
-    // }
-
-    // if (
-    //   this.editEventForm.value.startDate !== null ||
-    //   this.editEventForm.value.endDate !== null
-    // ) {
-    //   const correctEndDay = this.editEventForm.value.endDate?.setDate(
-    //     this.editEventForm.value.endDate?.getDate() + 1
-    //   );
-
-    //   this.data().event.setDates(
-    //     this.editEventForm.value.startDate,
-    //     correctEndDay,
-    //     { allDay: this.editEventForm.value.allDay }
-    //   );
-    // }
+    console.log(this.eventData());
 
     this.visible.set(false);
     this.editEventForm.reset();

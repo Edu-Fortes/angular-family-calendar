@@ -39,4 +39,20 @@ export class DatesHandlerService {
     if (numberOfSelectedDays <= 1) return false;
     return true;
   }
+
+  public excludeOneDayToEnd(end: string): string {
+    const endDate = new Date(end);
+    endDate.setDate(endDate.getDate());
+    return formatDate(endDate, {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+      locale: 'pt-BR',
+    });
+  }
+
+  public addOneDayToEndDate(end: Date): Date {
+    end.setDate(end.getDate() + 1);
+    return end;
+  }
 }
