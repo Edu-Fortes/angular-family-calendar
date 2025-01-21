@@ -89,4 +89,9 @@ export class CreateDialogComponent {
     this.dialogService.closeCreateEvent();
     this.createEventForm.reset();
   }
+
+  closeDialog() {
+    this.visible.set(false)
+    this.createEventForm.reset()
+  }
 }

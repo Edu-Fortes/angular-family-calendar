@@ -127,7 +127,7 @@ export class EditDialogComponent {
     );
     this.eventData().event.setDates(
       this.editEventForm.value.startDate,
-      this.dateHandler.addOneDayToEndDate(this.editEventForm.value.endDate),
+      this.editEventForm.value.endDate,
       { allDay: this.editEventForm.value.allDay } //quando muitos dias dá para settar allDay para false, quando selecionado somente o allday, plota dois dias
     );
 
@@ -135,5 +135,15 @@ export class EditDialogComponent {
 
     this.visible.set(false);
     this.editEventForm.reset();
+  }
+
+  removeEvent() {
+    this.eventData().event.remove()
+    this.visible.set(false)
+  }
+
+  closeDialog() {
+    this.visible.set(false)
+    this.editEventForm.reset()
   }
 }
