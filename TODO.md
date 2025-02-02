@@ -1,5 +1,16 @@
 # TO DO LIST
 
+## Dicas
+
+Case allDay for true, dia de end date é mais um. Ex:
+allDay: tru,
+start: 2025-02-01
+end: 2025-02-02
+
+Caso allDay for false, dia de end é o mesmo
+
+Caso allDay true e end date for o mesmo do start date, fullCalendar coloca null no end date
+
 ## Features
 
 - Criar modal para editar evento com:
