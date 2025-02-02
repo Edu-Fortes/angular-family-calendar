@@ -48,64 +48,24 @@ export class CalendarComponent {
     },
     eventSources: [
       {
-        events: [
-          {
-            title: 'Terminar App',
-            date: '2024-12-26',
-            allDay: false,
-          },
-          {
-            title: 'Lançar App para publico alvo',
-            date: '2024-12-27',
-            allDay: false,
-          },
-        ],
-        color: 'black', // an option!
-        textColor: 'yellow', // an option!
+        url: 'https://localhost:7029/users/1/events',
+        color: 'red',
+        textColor: 'white',
       },
       {
-        events: [
-          {
-            title: 'Evento Custom',
-            date: '2024-12-27',
-            allDay: false,
-          },
-          {
-            title: 'Nova cor evento',
-            date: '2024-12-27',
-            allDay: false,
-          },
-        ],
-        color: 'green', // an option!
-        // textColor: 'yellow' // an option!
+        url: 'https://localhost:7029/users/2/events',
+        color: 'blue',
+        textColor: 'white',
       },
       {
-        events: [
-          {
-            title: 'Festa ano novo firma',
-            date: '2024-12-28',
-            allDay: false,
-          },
-          {
-            title: 'Véspera Ano novo',
-            date: '2024-12-31',
-            allDay: false,
-          },
-        ],
-        color: 'orange', // an option!
-        // textColor: 'yellow' // an option!
+        url: 'https://localhost:7029/users/3/events',
+        color: 'orange',
+        textColor: 'black',
       },
       {
-        events: [
-          {
-            title: 'Festa ano novo firma',
-            date: '2024-12-27',
-          },
-          {
-            title: 'Véspera Ano novo',
-            date: '2024-12-31',
-          },
-        ],
+        url: 'https://localhost:7029/users/4/events',
+        color: 'sky',
+        textColor: 'white',
       },
     ],
     displayEventTime: false,
