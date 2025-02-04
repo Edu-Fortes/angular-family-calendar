@@ -9,8 +9,10 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { DatesHandlerService } from '../../services/dates-handler/dates-handler.service';
-import { FamilyMember, familyMembers } from '../../models/family-members.data';
 import { CreateEventForm } from '../../models/form-input.interface';
+import { EventService } from '../../services/event/event.service';
+import { UserService } from '../../services/user/user.service';
+import { User } from '../../models/user.interface';
 
 @Component({
   selector: 'app-create-dialog',
@@ -31,10 +33,27 @@ export class CreateDialogComponent {
   private calendarInteractionService = inject(CalendarInteractionService);
   private dateHandler = inject(DatesHandlerService);
   private formBuilder = inject(FormBuilder);
+  private eventService = inject(EventService);
+  private userService = inject(UserService);
 
   visible = this.dialogService.createEventState();
   dateSelection = this.calendarInteractionService.getDateSelection();
-  familyMembers: FamilyMember[] = familyMembers;
+  familyMembers: User[] = [];
+
+  ngOnInit() {
+    this.loadFamilyMembers();
+  }
+
+  loadFamilyMembers() {
+    this.userService.getUSers().subscribe({
+      next: (users) => {
+        this.familyMembers = users;
+      },
+      error: (error) => {
+        console.error('Error loading family members', error);
+      },
+    });
+  }
 
   formatedDate: Signal<string> = computed(() => {
     return this.dateHandler.formatedDate(
@@ -43,15 +62,17 @@ export class CreateDialogComponent {
     );
   });
 
-  createEventForm: FormGroup = this.formBuilder.nonNullable.group<CreateEventForm>({
-    allDay: true,
-    eventTitle: '',
-    familyMember: {
-      name: 'Toda a família',
-      color: 'sky',
-      textColor: 'white',
-    },
-  });
+  createEventForm: FormGroup =
+    this.formBuilder.nonNullable.group<CreateEventForm>({
+      allDay: true,
+      eventTitle: '',
+      familyMember: {
+        id: 0,
+        name: 'Toda a família',
+        color: 'sky',
+        textColor: 'white',
+      },
+    });
 
   allDay: Signal<boolean> = computed(() => {
     const moreThanOneDay: boolean = this.dateHandler.moreThanOneDay(
@@ -66,32 +87,53 @@ export class CreateDialogComponent {
     this.dateSelection().jsEvent?.preventDefault();
 
     const calendarApi = this.dateSelection().view.calendar;
+
     const title = this.createEventForm.value.eventTitle
       ? this.createEventForm.value.eventTitle
       : 'Evento sem título';
 
     const familyMember = this.createEventForm.value.familyMember;
+    console.log('Log do familyMember: ', familyMember);
     if (!familyMember) {
       console.error('Family member not selected');
       return;
     }
 
-    calendarApi.addEvent({
+    const event = {
       title: title,
-      start: this.dateSelection().startStr,
-      end: this.dateSelection().endStr,
+      start: new Date(this.dateSelection().start),
+      end: new Date(this.dateSelection().end),
       allDay: this.allDay(),
-      color: familyMember.color,
-      textColor: familyMember.textColor,
-      familyMember: familyMember.name,
-    });
+      userId: familyMember.userId,
+    };
+    console.log('Log do event: ', event);
 
-    this.dialogService.closeCreateEvent();
-    this.createEventForm.reset();
+    this.eventService.createEvent(event).subscribe({
+      next: (response) => {
+        console.log('Event created', response);
+
+        calendarApi.addEvent(
+          {
+            title: title,
+            start: this.dateSelection().startStr,
+            end: this.dateSelection().endStr,
+            allDay: this.allDay(),
+          },
+          `${familyMember.userId}`
+        );
+        calendarApi.refetchEvents();
+
+        this.dialogService.closeCreateEvent();
+        this.createEventForm.reset();
+      },
+      error: (error) => {
+        console.error('Error creating event', error);
+      },
+    });
   }
 
   closeDialog() {
-    this.visible.set(false)
-    this.createEventForm.reset()
+    this.visible.set(false);
+    this.createEventForm.reset();
   }
 }

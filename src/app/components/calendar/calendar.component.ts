@@ -10,6 +10,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import { DialogHandlerService } from '../../services/dialog-handler/dialog-handler.service';
 import { CalendarInteractionService } from '../../services/calendar-interaction/calendar-interaction.service';
+import { UserService } from '../../services/user/user.service';
+import { User } from '../../models/user.interface';
 
 @Component({
   selector: 'app-calendar',
@@ -48,21 +50,25 @@ export class CalendarComponent {
     },
     eventSources: [
       {
+        id: '1',
         url: 'https://localhost:7029/users/1/events',
         color: 'red',
         textColor: 'white',
       },
       {
+        id: '2',
         url: 'https://localhost:7029/users/2/events',
         color: 'blue',
         textColor: 'white',
       },
       {
+        id: '3',
         url: 'https://localhost:7029/users/3/events',
         color: 'orange',
         textColor: 'black',
       },
       {
+        id: '4',
         url: 'https://localhost:7029/users/4/events',
         color: 'sky',
         textColor: 'white',
