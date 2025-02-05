@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -14,5 +14,14 @@ export class EventService {
 
   createEvent(event: Event): Observable<any> {
     return this.http.post(this.apiUrl, event);
+  }
+
+  getEvents(): Observable<Event[]> {
+    return this.http.get<Event[]>(this.apiUrl);
+  }
+
+  updateEvent(eventId: number, event: Event): Observable<any> {
+    //precisa verificar o header está enviando como plain/text
+    return this.http.put(`${this.apiUrl}/${eventId}`, event);
   }
 }

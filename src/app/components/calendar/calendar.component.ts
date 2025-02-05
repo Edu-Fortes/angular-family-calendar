@@ -94,15 +94,6 @@ export class CalendarComponent {
     this.calendarInteractionService.setEventClick(eventClickInfo);
     this.dialogService.openEditEvent();
 
-    // this.selectionService.setEventClick(eventClickInfo);
     console.log('Log do eventClick: ', eventClickInfo.event);
-
-    // this.selectionService.setEventData({
-    //   title: eventClickInfo.event.title,
-    //   allDay: eventClickInfo.event.allDay,
-    //   startStr: eventClickInfo.event.startStr,
-    //   endStr: eventClickInfo.event.endStr,
-    //   ...eventClickInfo.event.extendedProps,
-    // });
   }
 }

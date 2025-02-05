@@ -1,149 +1,158 @@
-// import { Component, computed, effect, inject, Signal } from '@angular/core';
-// import { ButtonModule } from 'primeng/button';
-// import { DialogModule } from 'primeng/dialog';
-// import { SelectModule } from 'primeng/select';
-// import { ToggleSwitchModule } from 'primeng/toggleswitch';
-// import { InputTextModule } from 'primeng/inputtext';
-// import { DatePickerModule } from 'primeng/datepicker';
-// import { DialogHandlerService } from '../../services/dialog-handler/dialog-handler.service';
-// import {
-//   ReactiveFormsModule,
-//   FormsModule,
-//   FormBuilder,
-//   FormGroup,
-// } from '@angular/forms';
-// import { CalendarInteractionService } from '../../services/calendar-interaction/calendar-interaction.service';
-// import { FamilyMember, familyMembers } from '../../models/family-members.data';
-// import { FormatDateOptions } from '@fullcalendar/core/index.js';
-// import { formatDate } from '@fullcalendar/core';
-// import { EditEventForm } from '../../models/form-input.interface';
-// import { DatesHandlerService } from '../../services/dates-handler/dates-handler.service';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { SelectModule } from 'primeng/select';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { InputTextModule } from 'primeng/inputtext';
+import { DatePickerModule } from 'primeng/datepicker';
+import { DialogHandlerService } from '../../services/dialog-handler/dialog-handler.service';
+import {
+  ReactiveFormsModule,
+  FormsModule,
+  FormBuilder,
+  FormGroup,
+} from '@angular/forms';
+import { CalendarInteractionService } from '../../services/calendar-interaction/calendar-interaction.service';
+import { FormatDateOptions } from '@fullcalendar/core/index.js';
+import { formatDate } from '@fullcalendar/core';
+import { EditEventForm } from '../../models/form-input.interface';
+import { DatesHandlerService } from '../../services/dates-handler/dates-handler.service';
+import { User } from '../../models/user.interface';
+import { UserService } from '../../services/user/user.service';
+import { EventService } from '../../services/event/event.service';
 
-// @Component({
-//   selector: 'app-edit-dialog',
-//   imports: [
-//     ReactiveFormsModule,
-//     FormsModule,
-//     DialogModule,
-//     SelectModule,
-//     ButtonModule,
-//     InputTextModule,
-//     ToggleSwitchModule,
-//     DatePickerModule,
-//   ],
-//   templateUrl: './edit-dialog.component.html',
-//   styleUrl: './edit-dialog.component.css',
-// })
-// export class EditDialogComponent {
-//   private dialogService = inject(DialogHandlerService);
-//   private calendarInteractionService = inject(CalendarInteractionService);
-//   private formBuilder = inject(FormBuilder);
-//   private dateHandler = inject(DatesHandlerService);
+@Component({
+  selector: 'app-edit-dialog',
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    DialogModule,
+    SelectModule,
+    ButtonModule,
+    InputTextModule,
+    ToggleSwitchModule,
+    DatePickerModule,
+  ],
+  templateUrl: './edit-dialog.component.html',
+  styleUrl: './edit-dialog.component.css',
+})
+export class EditDialogComponent implements OnInit {
+  private dialogService = inject(DialogHandlerService);
+  private calendarInteractionService = inject(CalendarInteractionService);
+  private formBuilder = inject(FormBuilder);
+  private dateHandler = inject(DatesHandlerService);
+  private userService = inject(UserService);
+  private eventService = inject(EventService);
 
-//   visible = this.dialogService.editEventState();
-//   eventData = this.calendarInteractionService.getEventClick();
-//   familyMembers: FamilyMember[] = familyMembers;
+  visible = this.dialogService.editEventState();
+  eventData = this.calendarInteractionService.getEventClick();
+  familyMembers: User[] = [];
+  eventsData: Event[] = [];
 
-//   placeholders = computed(() => {
-//     const data = this.eventData().event;
+  ngOnInit() {
+    this.loadFamilyMembers();
+  }
 
-//     if (data) {
-//       const formaterOptions: FormatDateOptions = {
-//         month: '2-digit',
-//         day: '2-digit',
-//         year: 'numeric',
-//         locale: 'pt-BR',
-//       };
-//       const startDate = formatDate(data.startStr, formaterOptions);
-//       const endDate = this.dateHandler.excludeOneDayToEnd(data.endStr);
-//       return {
-//         allDay: data.allDay,
-//         eventTitle: data.title,
-//         startDateStr: startDate,
-//         endDateStr: endDate,
-//         familyMember: data.extendedProps['familyMember'],
-//       };
-//     }
-//     return;
-//   });
+  loadFamilyMembers() {
+    this.userService.getUSers().subscribe({
+      next: (users) => {
+        this.familyMembers = users;
+      },
+      error: (error) => {
+        console.error('Error loading family members', error);
+      },
+    });
+  }
 
-//   editEventForm: FormGroup = this.formBuilder.nonNullable.group<EditEventForm>({
-//     allDay: true,
-//     eventTitle: '',
-//     familyMember: {
-//       name: '',
-//       color: 'sky',
-//       textColor: 'white',
-//     },
-//     startDate: '',
-//     endDate: '',
-//   });
+  placeholders = computed(() => {
+    const data = this.eventData().event;
 
-//   editEvent() {
-//     console.log(this.editEventForm.value);
+    if (data) {
+      const formaterOptions: FormatDateOptions = {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+        locale: 'pt-BR',
+      };
+      const startDate = formatDate(data.startStr, formaterOptions);
+      const endDate = this.dateHandler.excludeOneDayToEnd(data.endStr);
+      const familyMember = this.familyMembers.find(
+        (member) => member.name === 'Família'
+      );
+      return {
+        allDay: data.allDay,
+        eventTitle: data.title,
+        startDateStr: startDate,
+        endDateStr: endDate,
+        user: familyMember,
+      };
+    }
+    return;
+  });
 
-//     if (this.editEventForm.value.eventTitle === '')
-//       this.editEventForm.patchValue({
-//         eventTitle: this.eventData().event.title,
-//       });
+  editEventForm: FormGroup = this.formBuilder.group<EditEventForm>({
+    start: null,
+    end: null,
+    allDay: true,
+    title: null,
+    userId: null,
+  });
 
-//     if (this.editEventForm.value.familyMember.name === '')
-//       this.editEventForm.patchValue({
-//         familyMember: this.eventData().event.extendedProps['familyMember'],
-//       });
+  editEvent() {
+    console.log('chamada da funçao editEvent: ', this.editEventForm.value);
 
-//     if (this.editEventForm.value.startDate === '')
-//       this.editEventForm.patchValue({
-//         startDate: this.eventData().event.start,
-//       });
+    this.editEventForm.patchValue({
+      allDay: this.eventData().event.allDay,
+      title: this.eventData().event.title,
+      start: this.eventData().event.start,
+      end: this.eventData().event.end,
+      userId: 5,
+    });
 
-//     if (this.editEventForm.value.endDate === '')
-//       this.editEventForm.patchValue({
-//         endDate: this.eventData().event.end,
-//       });
+    const initialFormValues = { ...this.editEventForm.value };
 
-//     console.log('depois do patch', this.editEventForm.value);
+    function getChangedValues(initialValues: any, currentValues: any): any {
+      const changedValues: any = {};
+      for (const key in currentValues) {
+        if (currentValues[key] !== initialValues[key]) {
+          changedValues[key];
+        }
+      }
+      return changedValues;
+    }
 
-//     // change infos on calendar
-//     this.eventData().event.setProp(
-//       'title',
-//       this.editEventForm.value.eventTitle
-//     );
-//     this.eventData().event.setExtendedProp(
-//       'familyMember',
-//       this.editEventForm.value.familyMember?.name
-//     );
-//     this.eventData().event.setProp(
-//       'borderColor',
-//       this.editEventForm.value.familyMember?.color
-//     );
-//     this.eventData().event.setProp(
-//       'backgroundColor',
-//       this.editEventForm.value.familyMember?.color
-//     );
-//     this.eventData().event.setProp(
-//       'textColor',
-//       this.editEventForm.value.familyMember?.textColor
-//     );
-//     this.eventData().event.setDates(
-//       this.editEventForm.value.startDate,
-//       this.editEventForm.value.endDate,
-//       { allDay: this.editEventForm.value.allDay } //quando muitos dias dá para settar allDay para false, quando selecionado somente o allday, plota dois dias
-//     );
+    console.log('depois do patch', this.editEventForm.value);
+    console.log('initial values', initialFormValues);
+    const calendarApi = this.eventData().view.calendar;
 
-//     console.log(this.eventData());
+    if (this.editEventForm.valid) {
+      const eventId = this.eventData().event.extendedProps['eventId'];
+      this.eventService
+        .updateEvent(
+          eventId,
+          getChangedValues(initialFormValues, this.editEventForm.value)
+        )
+        .subscribe({
+          next: (response) => {
+            console.log('Event updated', response);
+            this.dialogService.closeEditEvent();
+            this.editEventForm.reset();
+            calendarApi.refetchEvents();
+          },
+          error: (error) => {
+            console.error('Error updating event', error);
+          },
+        });
+    }
+  }
 
-//     this.visible.set(false);
-//     this.editEventForm.reset();
-//   }
+  removeEvent() {
+    this.eventData().event.remove();
+    this.visible.set(false);
+  }
 
-//   removeEvent() {
-//     this.eventData().event.remove()
-//     this.visible.set(false)
-//   }
-
-//   closeDialog() {
-//     this.visible.set(false)
-//     this.editEventForm.reset()
-//   }
-// }
+  closeDialog() {
+    this.visible.set(false);
+    this.editEventForm.reset();
+  }
+}

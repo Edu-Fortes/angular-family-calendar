@@ -1,4 +1,4 @@
-import { Component, computed, inject, Signal } from '@angular/core';
+import { Component, computed, inject, OnInit, Signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DialogHandlerService } from '../../services/dialog-handler/dialog-handler.service';
 import { CalendarInteractionService } from '../../services/calendar-interaction/calendar-interaction.service';
@@ -13,6 +13,7 @@ import { CreateEventForm } from '../../models/form-input.interface';
 import { EventService } from '../../services/event/event.service';
 import { UserService } from '../../services/user/user.service';
 import { User } from '../../models/user.interface';
+import { Event } from '../../models/event.interface';
 
 @Component({
   selector: 'app-create-dialog',
@@ -28,7 +29,7 @@ import { User } from '../../models/user.interface';
   templateUrl: './create-dialog.component.html',
   styleUrl: './create-dialog.component.css',
 })
-export class CreateDialogComponent {
+export class CreateDialogComponent implements OnInit {
   private dialogService = inject(DialogHandlerService);
   private calendarInteractionService = inject(CalendarInteractionService);
   private dateHandler = inject(DatesHandlerService);
@@ -67,7 +68,7 @@ export class CreateDialogComponent {
       allDay: true,
       eventTitle: '',
       familyMember: {
-        id: 0,
+        userId: 0,
         name: 'Toda a família',
         color: 'sky',
         textColor: 'white',
@@ -99,7 +100,7 @@ export class CreateDialogComponent {
       return;
     }
 
-    const event = {
+    const event: Event = {
       title: title,
       start: new Date(this.dateSelection().start),
       end: new Date(this.dateSelection().end),

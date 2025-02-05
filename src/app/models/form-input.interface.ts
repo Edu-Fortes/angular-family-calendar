@@ -1,15 +1,15 @@
-import { FamilyMember } from './family-members.data';
+import { User } from './user.interface';
 
 export interface CreateEventForm {
   allDay: boolean;
   eventTitle: string;
-  familyMember: FamilyMember;
+  familyMember: User;
 }
 
 export interface EditEventForm {
-  allDay: boolean;
-  eventTitle: string;
-  familyMember: FamilyMember;
-  startDate: string;
-  endDate: string;
+  allDay: boolean | null;
+  title: string | null;
+  userId?: number | null;
+  start: string | null;
+  end: string | null;
 }
