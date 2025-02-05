@@ -105,6 +105,7 @@ export class CreateDialogComponent implements OnInit {
       start: new Date(this.dateSelection().start),
       end: new Date(this.dateSelection().end),
       allDay: this.allDay(),
+      extendedProps: familyMember.name,
       userId: familyMember.userId,
     };
     console.log('Log do event: ', event);
