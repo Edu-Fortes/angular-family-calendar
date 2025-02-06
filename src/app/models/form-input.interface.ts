@@ -7,9 +7,10 @@ export interface CreateEventForm {
 }
 
 export interface EditEventForm {
+  [key: string]: any;
   allDay: boolean | null;
   title: string | null;
   userId?: number | null;
-  start: string | null;
-  end: string | null;
+  start: Date | null;
+  end: Date | null;
 }

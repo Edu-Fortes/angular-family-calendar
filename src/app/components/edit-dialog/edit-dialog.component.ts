@@ -76,15 +76,12 @@ export class EditDialogComponent implements OnInit {
       };
       const startDate = formatDate(data.startStr, formaterOptions);
       const endDate = this.dateHandler.excludeOneDayToEnd(data.endStr);
-      const familyMember = this.familyMembers.find(
-        (member) => member.name === 'Família'
-      );
       return {
         allDay: data.allDay,
         eventTitle: data.title,
         startDateStr: startDate,
         endDateStr: endDate,
-        user: familyMember,
+        user: data.extendedProps['user'],
       };
     }
     return;
@@ -93,62 +90,68 @@ export class EditDialogComponent implements OnInit {
   editEventForm: FormGroup = this.formBuilder.group<EditEventForm>({
     start: null,
     end: null,
-    allDay: true,
+    allDay: null,
     title: null,
     userId: null,
   });
 
-  editEvent() {
-    console.log('chamada da funçao editEvent: ', this.editEventForm.value);
+  getChangedValues(initialValues: EditEventForm, currentValues: EditEventForm) {
+    const changedValues: Partial<EditEventForm> = {};
+    for (const key in currentValues) {
+      if (
+        currentValues[key] !== initialValues[key] &&
+        currentValues[key] !== null
+      ) {
+        if (key === 'end') {
+          const endDate = currentValues[key];
+          endDate.setDate(endDate.getDate() + 1);
+          changedValues[key] = endDate;
+        } else {
+          changedValues[key] = currentValues[key];
+        }
+        changedValues[key] = currentValues[key];
+      }
+    }
+    return changedValues;
+  }
 
-    this.editEventForm.patchValue({
-      allDay: this.eventData().event.allDay,
-      title: this.eventData().event.title,
+  editEvent() {
+    console.log('initial form values', this.editEventForm.value);
+
+    const formValues = this.editEventForm.value;
+    const initialFormValues = {
       start: this.eventData().event.start,
       end: this.eventData().event.end,
-      userId: 5,
-    });
+      allDay: this.eventData().event.allDay,
+      title: this.eventData().event.title,
+      userId: this.eventData().event.extendedProps['user'],
+    };
 
-    const initialFormValues = { ...this.editEventForm.value };
+    const changedValues = this.getChangedValues(initialFormValues, formValues);
+    console.log('changed values', changedValues);
 
-    function getChangedValues(initialValues: any, currentValues: any): any {
-      const changedValues: any = {};
-      for (const key in currentValues) {
-        if (currentValues[key] !== initialValues[key]) {
-          changedValues[key];
-        }
-      }
-      return changedValues;
-    }
-
-    console.log('depois do patch', this.editEventForm.value);
-    console.log('initial values', initialFormValues);
-    const calendarApi = this.eventData().view.calendar;
-
-    if (this.editEventForm.valid) {
+    if (Object.keys(changedValues).length > 0) {
       const eventId = this.eventData().event.extendedProps['eventId'];
-      this.eventService
-        .updateEvent(
-          eventId,
-          getChangedValues(initialFormValues, this.editEventForm.value)
-        )
-        .subscribe({
-          next: (response) => {
-            console.log('Event updated', response);
-            this.dialogService.closeEditEvent();
-            this.editEventForm.reset();
-            calendarApi.refetchEvents();
-          },
-          error: (error) => {
-            console.error('Error updating event', error);
-          },
-        });
+      this.eventService.updateEvent(eventId, changedValues).subscribe({
+        next: (response) => {
+          console.log('Event updated successfully', response);
+          this.dialogService.closeEditEvent();
+          this.editEventForm.reset();
+          this.eventData().view.calendar.refetchEvents();
+        },
+        error: (error) => {
+          console.error('Error updating event', error);
+        },
+      });
+    } else {
+      console.log('No changes were made');
+      this.dialogService.closeEditEvent();
+      this.editEventForm.reset();
     }
   }
 
   removeEvent() {
     this.eventData().event.remove();
-    this.visible.set(false);
   }
 
   closeDialog() {

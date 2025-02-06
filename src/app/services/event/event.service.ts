@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Event } from '../../models/event.interface';
+import { EditEventForm } from '../../models/form-input.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -20,8 +21,9 @@ export class EventService {
     return this.http.get<Event[]>(this.apiUrl);
   }
 
-  updateEvent(eventId: number, event: Event): Observable<any> {
+  updateEvent(eventId: number, event: Partial<EditEventForm>): Observable<any> {
     //precisa verificar o header está enviando como plain/text
-    return this.http.put(`${this.apiUrl}/${eventId}`, event);
+    return this.http.patch(`${this.apiUrl}/${eventId}`, event);
   }
 }
+// alterar o método updateEvent para receber e alterar somente os campos que foram alterados
