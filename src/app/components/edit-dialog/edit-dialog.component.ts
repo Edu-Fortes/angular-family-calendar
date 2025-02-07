@@ -20,6 +20,7 @@ import { DatesHandlerService } from '../../services/dates-handler/dates-handler.
 import { User } from '../../models/user.interface';
 import { UserService } from '../../services/user/user.service';
 import { EventService } from '../../services/event/event.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-edit-dialog',
@@ -37,6 +38,8 @@ import { EventService } from '../../services/event/event.service';
   styleUrl: './edit-dialog.component.css',
 })
 export class EditDialogComponent implements OnInit {
+  constructor(private messageService: MessageService) {}
+
   private dialogService = inject(DialogHandlerService);
   private calendarInteractionService = inject(CalendarInteractionService);
   private formBuilder = inject(FormBuilder);
@@ -131,14 +134,24 @@ export class EditDialogComponent implements OnInit {
       const eventId = this.eventData().event.extendedProps['eventId'];
       this.eventService.updateEvent(eventId, changedValues).subscribe({
         next: (response) => {
-          // ADICIONATR PRIME NG TOAST AQUI PARA DAR FEEDBACK SUCESSO AO USUÁRIO
-          console.log('Event updated successfully');
+          // Service to control PrimeNG Toast
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sucesso',
+            detail: 'Evento atualizado com sucesso',
+          });
+
           this.dialogService.closeEditEvent();
           this.editEventForm.reset();
           this.eventData().view.calendar.refetchEvents();
         },
         error: (error) => {
-          //ADICIONAR PRIME NG TOAST AQUI PARA DAR FEEDBACK DE ERRO AO USUÁRIO
+          // Service to control PrimeNG Toast
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'Erro ao atualizar evento',
+          });
           console.error('Error updating event', error);
         },
       });

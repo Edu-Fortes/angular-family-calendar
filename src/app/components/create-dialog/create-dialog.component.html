@@ -1,6 +1,15 @@
-<form [formGroup]="createEventForm" (ngSubmit)="createEvent()" class="card flex justify-center max-w-full">
-  <p-dialog header="Adicionar evento" closeOnEscape="true" maskStyleClass="backdrop-blur-sm bg-black/30"
-    [(visible)]="visible" [style]="{ width: '35rem' }">
+<form
+  [formGroup]="createEventForm"
+  (ngSubmit)="createEvent()"
+  class="card flex justify-center max-w-full"
+>
+  <p-dialog
+    header="Adicionar evento"
+    closeOnEscape="true"
+    maskStyleClass="backdrop-blur-sm bg-black/30"
+    [(visible)]="visible"
+    [style]="{ width: '35rem' }"
+  >
     <div class="flex justify-between mt-3 mb-10">
       <p class="p-text-secondary block">{{ formatedDate() }}</p>
       <div class="flex gap-4 items-start">
@@ -10,8 +19,13 @@
     </div>
     <div class="mb-9">
       <p-floatlabel variant="on" class="w-full">
-        <p-select inputId="family-member" class="w-full" formControlName="familyMember" [options]="familyMembers"
-          optionLabel="name" />
+        <p-select
+          inputId="family-member"
+          class="w-full"
+          formControlName="familyMember"
+          [options]="familyMembers"
+          optionLabel="name"
+        />
         <label for="family-member">Membro da família</label>
       </p-floatlabel>
       <small id="family-member-help">Selecione um membro da família</small>
@@ -19,12 +33,23 @@
     <div class="mb-9">
       <p-floatlabel variant="on">
         <label for="evet_title">Título</label>
-        <input pInputText formControlName="eventTitle" id="event_title" autocomplete="off" class="flex-auto w-full" />
+        <input
+          pInputText
+          formControlName="eventTitle"
+          id="event_title"
+          autocomplete="off"
+          class="flex-auto w-full"
+        />
       </p-floatlabel>
       <small id="event_title-help">Adicione um título para o novo evento</small>
     </div>
     <div class="flex justify-end gap-4">
-      <p-button icon="pi pi-times" [rounded]="true" severity="danger" (click)="closeDialog()" />
+      <p-button
+        icon="pi pi-times"
+        [rounded]="true"
+        severity="danger"
+        (click)="closeDialog()"
+      />
       <p-button icon="pi pi-check" [rounded]="true" type="submit" />
     </div>
   </p-dialog>

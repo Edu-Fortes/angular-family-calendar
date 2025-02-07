@@ -14,6 +14,7 @@ import { EventService } from '../../services/event/event.service';
 import { UserService } from '../../services/user/user.service';
 import { User } from '../../models/user.interface';
 import { Event } from '../../models/event.interface';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-create-dialog',
@@ -30,6 +31,8 @@ import { Event } from '../../models/event.interface';
   styleUrl: './create-dialog.component.css',
 })
 export class CreateDialogComponent implements OnInit {
+  constructor(private messageService: MessageService) {}
+
   private dialogService = inject(DialogHandlerService);
   private calendarInteractionService = inject(CalendarInteractionService);
   private dateHandler = inject(DatesHandlerService);
@@ -125,10 +128,23 @@ export class CreateDialogComponent implements OnInit {
         );
         calendarApi.refetchEvents();
 
+        // Service to control PrimeNG Toast
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Evento criado com sucesso',
+        });
+
         this.dialogService.closeCreateEvent();
         this.createEventForm.reset();
       },
       error: (error) => {
+        // Service to control PrimeNG Toast
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Erro ao criar evento',
+        });
         console.error('Error creating event', error);
       },
     });
