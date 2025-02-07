@@ -93,7 +93,5 @@ export class CalendarComponent {
   handleEventClick(eventClickInfo: EventClickArg) {
     this.calendarInteractionService.setEventClick(eventClickInfo);
     this.dialogService.openEditEvent();
-
-    console.log('Log do eventClick: ', eventClickInfo.event);
   }
 }

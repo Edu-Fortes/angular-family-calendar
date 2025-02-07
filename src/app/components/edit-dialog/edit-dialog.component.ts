@@ -116,8 +116,6 @@ export class EditDialogComponent implements OnInit {
   }
 
   editEvent() {
-    console.log('initial form values', this.editEventForm.value);
-
     const formValues = this.editEventForm.value;
     const initialFormValues = {
       start: this.eventData().event.start,
@@ -128,23 +126,23 @@ export class EditDialogComponent implements OnInit {
     };
 
     const changedValues = this.getChangedValues(initialFormValues, formValues);
-    console.log('changed values', changedValues);
 
     if (Object.keys(changedValues).length > 0) {
       const eventId = this.eventData().event.extendedProps['eventId'];
       this.eventService.updateEvent(eventId, changedValues).subscribe({
         next: (response) => {
-          console.log('Event updated successfully', response);
+          // ADICIONATR PRIME NG TOAST AQUI PARA DAR FEEDBACK SUCESSO AO USUÁRIO
+          console.log('Event updated successfully');
           this.dialogService.closeEditEvent();
           this.editEventForm.reset();
           this.eventData().view.calendar.refetchEvents();
         },
         error: (error) => {
+          //ADICIONAR PRIME NG TOAST AQUI PARA DAR FEEDBACK DE ERRO AO USUÁRIO
           console.error('Error updating event', error);
         },
       });
     } else {
-      console.log('No changes were made');
       this.dialogService.closeEditEvent();
       this.editEventForm.reset();
     }
