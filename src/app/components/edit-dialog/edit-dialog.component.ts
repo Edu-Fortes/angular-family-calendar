@@ -161,8 +161,30 @@ export class EditDialogComponent implements OnInit {
     }
   }
 
-  removeEvent() {
-    this.eventData().event.remove();
+  deleteEvent() {
+    const eventId = this.eventData().event.extendedProps['eventId'];
+    this.eventService.deleteEvent(eventId).subscribe({
+      next: (response) => {
+        // Service to control PrimeNG Toast
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Evento deletado com sucesso',
+        });
+        this.dialogService.closeEditEvent();
+        this.editEventForm.reset();
+        this.eventData().view.calendar.refetchEvents();
+      },
+      error: (error) => {
+        // Service to control PrimeNG Toast
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Erro ao deletar evento',
+        });
+        console.error('Error deleting event', error);
+      },
+    });
   }
 
   closeDialog() {

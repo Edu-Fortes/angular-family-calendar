@@ -22,8 +22,10 @@ export class EventService {
   }
 
   updateEvent(eventId: number, event: Partial<EditEventForm>): Observable<any> {
-    //precisa verificar o header está enviando como plain/text
     return this.http.patch(`${this.apiUrl}/${eventId}`, event);
   }
+
+  deleteEvent(eventId: number) {
+    return this.http.delete(`${this.apiUrl}/${eventId}`);
+  }
 }
-// alterar o método updateEvent para receber e alterar somente os campos que foram alterados
