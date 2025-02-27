@@ -8,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { Select } from 'primeng/select';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { TabsModule } from 'primeng/tabs';
 import { DatesHandlerService } from '../../services/dates-handler/dates-handler.service';
 import { CreateEventForm } from '../../models/form-input.interface';
 import { EventService } from '../../services/event/event.service';
@@ -25,13 +26,14 @@ import { MessageService } from 'primeng/api';
     ToggleSwitchModule,
     Select,
     FloatLabelModule,
+    TabsModule,
     ReactiveFormsModule,
   ],
   templateUrl: './create-dialog.component.html',
   styleUrl: './create-dialog.component.css',
 })
 export class CreateDialogComponent implements OnInit {
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService) { }
 
   private dialogService = inject(DialogHandlerService);
   private calendarInteractionService = inject(CalendarInteractionService);
