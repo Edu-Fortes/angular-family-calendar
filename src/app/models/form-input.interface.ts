@@ -4,6 +4,9 @@ export interface CreateEventForm {
   allDay: boolean;
   eventTitle: string;
   familyMember: User;
+  weekDay: string;
+  timePeriod: string;
+  repeatEvery: string;
 }
 
 export interface EditEventForm {
