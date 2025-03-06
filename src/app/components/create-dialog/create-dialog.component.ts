@@ -40,7 +40,7 @@ import {
   styleUrl: './create-dialog.component.css',
 })
 export class CreateDialogComponent implements OnInit {
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService) { }
 
   private dialogService = inject(DialogHandlerService);
   private calendarInteractionService = inject(CalendarInteractionService);
